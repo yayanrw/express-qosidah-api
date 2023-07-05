@@ -4,6 +4,7 @@
   "description": "Qosidah App Back-End with Express, Prisma",
   "main": "index.js",
   "dependencies": {
+    "@prisma/client": "^4.16.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "pg": "^8.11.1",
