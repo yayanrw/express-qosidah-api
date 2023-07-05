@@ -1,0 +1,32 @@
+{
+  "name": "express-qosidah-api",
+  "version": "1.0.0",
+  "description": "Qosidah App Back-End with Express, Prisma",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "pg": "^8.11.1",
+    "prisma": "^4.16.2",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yayanrw/express-qosidah-api.git"
+  },
+  "keywords": [
+    "express",
+    "prisma"
+  ],
+  "author": "yayanrw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yayanrw/express-qosidah-api/issues"
+  },
+  "homepage": "https://github.com/yayanrw/express-qosidah-api#readme"
+}
