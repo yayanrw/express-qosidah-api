@@ -1,6 +1,6 @@
 interface ApiResponse {
-  error?: string;
-  message?: string;
+  error?: string | null;
+  message?: string | null;
   data?: any;
 }
 
