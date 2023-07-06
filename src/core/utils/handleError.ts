@@ -16,7 +16,7 @@ export function handleError(res: Response, error: any) {
   } else if (error instanceof BadRequestError) {
     return wrapResponse<null>({
       res,
-      error: "Bad Request Error",
+      error: "BAD_REQUEST",
       message: error.message,
       data: null,
       statusCode: HttpStatusCode.BAD_REQUEST,
@@ -24,7 +24,7 @@ export function handleError(res: Response, error: any) {
   } else {
     return wrapResponse<null>({
       res,
-      error: "Internal Server Error",
+      error: "SERVER_ERROR",
       message: "Internal Server Error",
       data: null,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
