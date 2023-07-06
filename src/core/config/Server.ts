@@ -28,6 +28,10 @@ export default class Server {
       defaultErrorHandler: false,
       routePrefix: "/api",
       controllers: [path.join(__dirname, "../../controllers/*.ts")],
+      defaults: {
+        nullResultCode: 404,
+        undefinedResultCode: 204,
+      },
     });
 
     this.port = Number(process.env.PORT) || 3000;
