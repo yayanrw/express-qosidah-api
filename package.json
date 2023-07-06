@@ -30,7 +30,7 @@
     "typescript": "^5.1.6"
   },
   "scripts": {
-    "dev": "nodemon -r ./paths.js src/index.ts",
+    "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/src/index.js",
     "seed": "ts-node prisma/seed.ts",
