@@ -9,7 +9,7 @@ dotenv.config();
  * Server class
  * @class
  */
-export class Server {
+export default class Server {
   /** @type {express.Application} */
   private app: express.Application;
   /** @type {number} */
