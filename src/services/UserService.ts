@@ -1,4 +1,4 @@
-import UserRepository from "../repositories/user_repository";
+import UserRepository from "../repositories/UserRepository";
 import { User } from "@prisma/client";
 import { InternalServerError, NotFoundError } from "routing-controllers";
 
