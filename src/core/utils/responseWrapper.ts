@@ -12,7 +12,7 @@ export function wrapResponse<T>({
   res: Response;
   error?: string;
   message?: string;
-  data: T;
+  data?: T | null | undefined; // Make data optional
   statusCode?: number;
 }): Response {
   const responseBody: ApiResponse<T> = {
