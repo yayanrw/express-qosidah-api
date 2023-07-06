@@ -11,15 +11,14 @@ export function wrapResponse<T>({
 }: {
   res: Response;
   error?: string;
-  message: string;
+  message?: string;
   data: T;
   statusCode?: number;
-}): void {
+}): Response {
   const responseBody: ApiResponse<T> = {
     error: error !== undefined ? error : null,
     message,
     data,
   };
-
-  res.status(statusCode || HttpStatusCode.OK).json(responseBody);
+  return res.status(statusCode || HttpStatusCode.OK).json(responseBody);
 }
