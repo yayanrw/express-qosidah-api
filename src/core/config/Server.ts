@@ -26,7 +26,8 @@ export default class Server {
     this.app = createExpressServer({
       cors: true,
       defaultErrorHandler: false,
-      controllers: [path.join(__dirname + "/../controllers/*.ts")],
+      routePrefix: "/api",
+      controllers: [path.join(__dirname, "../../controllers/*.ts")],
     });
 
     this.port = Number(process.env.PORT) || 3000;
