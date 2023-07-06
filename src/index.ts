@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import Server from "./server/Server";
+import Server from "./core/config/Server";
 
 /**
  * Instantiates Server
