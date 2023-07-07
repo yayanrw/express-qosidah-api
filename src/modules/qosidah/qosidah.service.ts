@@ -1,74 +1,55 @@
-import { KeywordQosidah } from "@prisma/client";
+import { Qosidah } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { keywordQosidahSchema } from "./qosidah.schema";
-import KeywordQosidahRepository from "./qosidah.repository";
+import { createQosidahSchema } from "./qosidah.schema";
+import QosidahRepository from "./qosidah.repository";
 
-const keywordQosidahRepository = new KeywordQosidahRepository();
+const qosidahRepository = new QosidahRepository();
 
-export default class KeywordQosidahService {
-  getAll = async (): Promise<KeywordQosidah[]> => {
-    return keywordQosidahRepository.getAll();
+export default class QosidahService {
+  getAll = async (): Promise<Qosidah[]> => {
+    return qosidahRepository.getAll();
   };
 
-  getById = async (id: string): Promise<KeywordQosidah | null> => {
-    const user = await keywordQosidahRepository.getById(id);
-    if (!user) {
-      throw new NotFoundError("Keyword Qosidah not found");
+  getById = async (id: string): Promise<Qosidah | null> => {
+    const qosidah = await qosidahRepository.getById(id);
+    if (!qosidah) {
+      throw new NotFoundError("Qosidah not found");
     }
-    return user;
+    return qosidah;
   };
 
-  create = async (data: KeywordQosidah): Promise<KeywordQosidah> => {
-    const isExist = await keywordQosidahRepository.getByKeyword(data.keyword);
-
-    if (isExist) {
-      throw new ValidationError("Keyword Qosidah already exists");
-    }
-
-    const { error, value } = keywordQosidahSchema.validate(data);
+  create = async (data: Qosidah): Promise<Qosidah> => {
+    const { error, value } = createQosidahSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const user = await keywordQosidahRepository.create(value);
-    return user;
+    const qosidah = await qosidahRepository.create(value);
+    return qosidah;
   };
 
-  update = async (
-    id: string,
-    updateData: KeywordQosidah
-  ): Promise<KeywordQosidah | null> => {
-    const isExist = await keywordQosidahRepository.getById(id);
+  update = async (id: string, updateData: Qosidah): Promise<Qosidah | null> => {
+    const isExist = await qosidahRepository.getById(id);
     if (!isExist) {
-      throw new NotFoundError("Keyword Qosidah not found");
+      throw new NotFoundError("Qosidah not found");
     }
 
-    if (isExist.keyword != updateData.keyword) {
-      const isExist = await keywordQosidahRepository.getByKeyword(
-        updateData.keyword
-      );
-
-      if (isExist) {
-        throw new ValidationError("Keyword Qosidah already exists");
-      }
-    }
-
-    const { error, value } = keywordQosidahSchema.validate(updateData);
+    const { error, value } = createQosidahSchema.validate(updateData);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const user = await keywordQosidahRepository.update(id, value);
-    return user;
+    const qosidah = await qosidahRepository.update(id, value);
+    return qosidah;
   };
 
   delete = async (id: string): Promise<void> => {
-    const isExist = await keywordQosidahRepository.getById(id);
+    const isExist = await qosidahRepository.getById(id);
     if (!isExist) {
-      throw new NotFoundError("Keyword Qosidah not found");
+      throw new NotFoundError("Qosidah not found");
     }
-    await keywordQosidahRepository.delete(id);
+    await qosidahRepository.delete(id);
   };
 }
