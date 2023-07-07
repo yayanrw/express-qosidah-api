@@ -16,6 +16,15 @@ export default class UserRepository {
     return user;
   };
 
+  getUserByEmail = async (email: string): Promise<User | null> => {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    return user;
+  };
+
   createUser = async (userData: User): Promise<User> => {
     const user = await prisma.user.create({
       data: userData,
