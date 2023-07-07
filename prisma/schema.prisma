@@ -19,7 +19,7 @@ model User {
   id String @id @default(uuid())
   email String @unique
   name String?
-  role Role?
+  role Role
   qosidahs Qosidah []
   createdAt DateTime @default(now())
 }
