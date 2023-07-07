@@ -12,6 +12,7 @@ router.get("*", function (req, res) {
     res,
     error: "NOT_FOUND",
     message: "Route not found",
+    data: null,
     statusCode: HttpStatusCode.NOT_FOUND,
   });
 });
