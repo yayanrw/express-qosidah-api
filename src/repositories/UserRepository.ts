@@ -1,35 +1,52 @@
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import prisma from "../core/config/prisma.config";
 
-class UserRepository {
-  private prisma: PrismaClient;
+const getAllUsers = async (): Promise<User[]> => {
+  const users = await prisma.user.findMany();
+  return users;
+};
 
-  constructor() {
-    this.prisma = new PrismaClient();
-  }
+const getUserById = async (id: string): Promise<User | null> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user;
+};
 
-  createUser = async (user: User): Promise<User> => {
-    return this.prisma.user.create({ data: user });
-  };
+const createUser = async (userData: User): Promise<User> => {
+  const user = await prisma.user.create({
+    data: userData,
+  });
+  return user;
+};
 
-  getUsers = async (): Promise<User[]> => {
-    return this.prisma.user.findMany();
-  };
+const updateUser = async (
+  id: string,
+  updatedUserData: User
+): Promise<User | null> => {
+  const user = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: updatedUserData,
+  });
+  return user;
+};
 
-  getUserById = async (id: string): Promise<User | null> => {
-    return this.prisma.user.findUnique({ where: { id } });
-  };
+const deleteUser = async (id: string): Promise<void> => {
+  await prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+};
 
-  getUserByEmail = async (email: string): Promise<User | null> => {
-    return this.prisma.user.findUnique({ where: { email } });
-  };
-
-  updateUser = async (id: string, user: User): Promise<User | null> => {
-    return this.prisma.user.update({ where: { id }, data: user });
-  };
-
-  deleteUser = async (id: string): Promise<User | null> => {
-    return this.prisma.user.delete({ where: { id } });
-  };
-}
-
-export default UserRepository;
+export default {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+};
