@@ -11,11 +11,19 @@ export default class QosidahDetailService {
   };
 
   getById = async (id: string): Promise<QosidahDetail | null> => {
-    const user = await qosidahDetailRepository.getById(id);
-    if (!user) {
+    const qosidahDetail = await qosidahDetailRepository.getById(id);
+    if (!qosidahDetail) {
       throw new NotFoundError("Qosidah Detail not found");
     }
-    return user;
+    return qosidahDetail;
+  };
+
+  getByQosudahId = async (id: string): Promise<QosidahDetail[] | null> => {
+    const qosidahDetail = await qosidahDetailRepository.getByQosidahId(id);
+    if (!qosidahDetail) {
+      throw new NotFoundError("Qosidah Detail not found");
+    }
+    return qosidahDetail;
   };
 
   create = async (data: QosidahDetail): Promise<QosidahDetail> => {
@@ -25,8 +33,8 @@ export default class QosidahDetailService {
       throw new ValidationError(error.message);
     }
 
-    const user = await qosidahDetailRepository.create(value);
-    return user;
+    const qosidahDetail = await qosidahDetailRepository.create(value);
+    return qosidahDetail;
   };
 
   update = async (
@@ -44,8 +52,8 @@ export default class QosidahDetailService {
       throw new ValidationError(error.message);
     }
 
-    const user = await qosidahDetailRepository.update(id, value);
-    return user;
+    const qosidahDetail = await qosidahDetailRepository.update(id, value);
+    return qosidahDetail;
   };
 
   delete = async (id: string): Promise<void> => {
