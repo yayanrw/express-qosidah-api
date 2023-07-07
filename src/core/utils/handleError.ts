@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { wrapResponse } from "./responseWrapper";
+import { wrapResponse } from "./wrapResponse";
 import HttpStatusCode from "../enum/http-status-code";
 import { Response } from "express";
 import { BadRequestError, NotFoundError, ValidationError } from "./exceptions";

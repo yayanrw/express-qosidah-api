@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "@prisma/client";
 import { handleError } from "../../core/utils/handleError";
 import UserService from "./user.service";
-import { wrapResponse } from "../../core/utils/responseWrapper";
+import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 
 const userService = new UserService();
@@ -40,7 +40,7 @@ export default class UserController {
   updateUser = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const updatedUserData: User = req.body;
-    
+
     try {
       const user = await userService.updateUser(id, updatedUserData);
       wrapResponse({ res, data: user, message: "User updated" });
