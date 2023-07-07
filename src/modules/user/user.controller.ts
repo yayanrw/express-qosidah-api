@@ -8,31 +8,36 @@ import { wrapAsync } from "../../core/utils/wrapAsync";
 const userService = new UserService();
 
 export default class UserController {
-  getUsers = wrapAsync(async (req: Request, res: Response) => {
+  getAll = wrapAsync(async (req: Request, res: Response) => {
     const users = await userService.getAll();
     wrapResponse({ res, data: users });
   });
 
-  getUserById = wrapAsync(async (req: Request, res: Response) => {
+  getById = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const user = await userService.getById(id);
     wrapResponse({ res, data: user });
   });
 
-  createUser = wrapAsync(async (req: Request, res: Response) => {
-    const userData: User = req.body;
-    const user = await userService.create(userData);
-    wrapResponse({ res, data: user, statusCode: HttpStatusCode.CREATED });
+  create = wrapAsync(async (req: Request, res: Response) => {
+    const data: User = req.body;
+    const user = await userService.create(data);
+    wrapResponse({
+      res,
+      data: user,
+      message: "User created",
+      statusCode: HttpStatusCode.CREATED,
+    });
   });
 
-  updateUser = wrapAsync(async (req: Request, res: Response) => {
+  update = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const updatedUserData: User = req.body;
-    const user = await userService.update(id, updatedUserData);
+    const updatedData: User = req.body;
+    const user = await userService.update(id, updatedData);
     wrapResponse({ res, data: user, message: "User updated" });
   });
 
-  deleteUser = wrapAsync(async (req: Request, res: Response) => {
+  delete = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     await userService.delete(id);
     wrapResponse({ res, message: "User deleted" });
