@@ -7,7 +7,7 @@ import HttpStatusCode from "../core/enum/http-status-code";
 const router = Router();
 
 router.use("/users", userRoutes);
-router.use("/keyword-qosidah", keywordQosidahRoutes);
+router.use("/keyword-qosidahs", keywordQosidahRoutes);
 
 // not found page
 router.get("*", function (req, res) {
