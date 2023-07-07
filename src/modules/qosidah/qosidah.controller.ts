@@ -1,49 +1,49 @@
 import { Request, Response } from "express";
-import { KeywordQosidah } from "@prisma/client";
+import { Qosidah } from "@prisma/client";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
-import KeywordQosidahService from "./qosidah.service";
+import QosidahService from "./qosidah.service";
 
-const keywordQosidahService = new KeywordQosidahService();
+const qosidahService = new QosidahService();
 
-export default class KeywordQosidahController {
+export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
-    const keywordQosidahs = await keywordQosidahService.getAll();
-    wrapResponse({ res, data: keywordQosidahs });
+    const qosidahs = await qosidahService.getAll();
+    wrapResponse({ res, data: qosidahs });
   });
 
   getById = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const keywordQosidah = await keywordQosidahService.getById(id);
-    wrapResponse({ res, data: keywordQosidah });
+    const qosidah = await qosidahService.getById(id);
+    wrapResponse({ res, data: qosidah });
   });
 
   create = wrapAsync(async (req: Request, res: Response) => {
-    const data: KeywordQosidah = req.body;
-    const keywordQosidah = await keywordQosidahService.create(data);
+    const data: Qosidah = req.body;
+    const qosidah = await qosidahService.create(data);
     wrapResponse({
       res,
-      data: keywordQosidah,
-      message: "Keyword Qosidah created",
+      data: qosidah,
+      message: "Qosidah created",
       statusCode: HttpStatusCode.CREATED,
     });
   });
 
   update = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const updatedData: KeywordQosidah = req.body;
-    const keywordQosidah = await keywordQosidahService.update(id, updatedData);
+    const updatedData: Qosidah = req.body;
+    const qosidah = await qosidahService.update(id, updatedData);
     wrapResponse({
       res,
-      data: keywordQosidah,
-      message: "Keyword Qosidah updated",
+      data: qosidah,
+      message: "Qosidah updated",
     });
   });
 
   delete = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    await keywordQosidahService.delete(id);
-    wrapResponse({ res, message: "Keyword Qosidah deleted" });
+    await qosidahService.delete(id);
+    wrapResponse({ res, message: "Qosidah deleted" });
   });
 }
