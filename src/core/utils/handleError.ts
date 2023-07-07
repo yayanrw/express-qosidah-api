@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BadRequestError, NotFoundError } from "routing-controllers";
 import { wrapResponse } from "./responseWrapper";
 import HttpStatusCode from "../enum/http-status-code";
 import { Response } from "express";
+import { BadRequestError, NotFoundError } from "./exceptions";
 
 export function handleError(res: Response, error: any) {
   if (error instanceof NotFoundError) {
     return wrapResponse<null>({
       res,
-      error: "NOT_FOUND",
+      error: error.errorType,
       message: error.message,
       data: null,
-      statusCode: HttpStatusCode.NOT_FOUND,
+      statusCode: error.statusCode,
     });
   } else if (error instanceof BadRequestError) {
     return wrapResponse<null>({

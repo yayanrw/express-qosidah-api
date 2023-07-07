@@ -1,11 +1,11 @@
 import { IsString, IsEmail, IsEnum } from "class-validator";
 
-enum UserRole {
+export enum UserRole {
   Admin = "Admin",
   User = "User",
 }
 
-export default class CreateUserDto {
+export class CreateUserDto {
   @IsString()
   public name: string | null;
 
@@ -15,7 +15,7 @@ export default class CreateUserDto {
   @IsEnum(UserRole)
   public role: UserRole | null;
 
-  constructor(id: string, name: string, email: string, role: UserRole) {
+  constructor(name: string, email: string, role: UserRole) {
     this.name = name;
     this.email = email;
     this.role = role;

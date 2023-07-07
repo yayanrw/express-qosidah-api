@@ -1,10 +1,12 @@
-import "reflect-metadata";
-import Server from "./core/config/Server";
+import "dotenv/config";
+import express from "express";
+import router from "./routes";
 
-/**
- * Instantiates Server
- */
-const server: Server = new Server();
+const app = express();
 
-/** Starts listening */
-server.listen();
+app.use(express.json());
+app.use("/api", router);
+
+app.listen(3000, () => {
+  console.log("App listening on port 3000");
+});
