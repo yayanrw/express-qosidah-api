@@ -20,8 +20,8 @@ model User {
   email String @unique
   name String?
   role Role
-  qosidahs Qosidah []
   createdAt DateTime @default(now())
+  qosidahs Qosidah []
 }
 
 model KeywordQosidah {
@@ -37,10 +37,23 @@ model Qosidah {
   title String
   titleLatin String?
   titleTranslate String?
-  keyword KeywordQosidah[]
   published Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   authorId String?
   author User? @relation(fields: [authorId], references: [id])
+  keyword KeywordQosidah[]
+  qosidahDetail QosidahDetail[]
+}
+
+model QosidahDetail {
+  id String @id @default(uuid())
+  order Int
+  lyrics String
+  lyricsLatin String?
+  lyricsTranslate String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  qosidahId String
+  qosidah Qosidah @relation(fields: [qosidahId], references: [id])
 }
