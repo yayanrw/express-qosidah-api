@@ -9,32 +9,32 @@ const userService = new UserService();
 
 export default class UserController {
   getUsers = wrapAsync(async (req: Request, res: Response) => {
-    const users = await userService.getAllUsers();
+    const users = await userService.getAll();
     wrapResponse({ res, data: users });
   });
 
   getUserById = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const user = await userService.getUserById(id);
+    const user = await userService.getById(id);
     wrapResponse({ res, data: user });
   });
 
   createUser = wrapAsync(async (req: Request, res: Response) => {
     const userData: User = req.body;
-    const user = await userService.createUser(userData);
+    const user = await userService.create(userData);
     wrapResponse({ res, data: user, statusCode: HttpStatusCode.CREATED });
   });
 
   updateUser = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const updatedUserData: User = req.body;
-    const user = await userService.updateUser(id, updatedUserData);
+    const user = await userService.update(id, updatedUserData);
     wrapResponse({ res, data: user, message: "User updated" });
   });
 
   deleteUser = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    await userService.deleteUser(id);
+    await userService.delete(id);
     wrapResponse({ res, message: "User deleted" });
   });
 }

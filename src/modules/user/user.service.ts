@@ -6,69 +6,64 @@ import { userSchema } from "./user.schema";
 const userRepository = new UserRepository();
 
 export default class UserService {
-  getAllUsers = async (): Promise<User[]> => {
-    return userRepository.getAllUsers();
+  getAll = async (): Promise<User[]> => {
+    return userRepository.getAll();
   };
 
-  getUserById = async (id: string): Promise<User | null> => {
-    const user = await userRepository.getUserById(id);
+  getById = async (id: string): Promise<User | null> => {
+    const user = await userRepository.getById(id);
     if (!user) {
       throw new NotFoundError("User not found");
     }
     return user;
   };
 
-  createUser = async (userData: User): Promise<User> => {
-    const isEmailExist = await userRepository.getUserByEmail(userData.email);
+  create = async (data: User): Promise<User> => {
+    const isEmailExist = await userRepository.getByEmail(data.email);
 
     if (isEmailExist) {
       throw new ValidationError("Email already exists");
     }
 
-    const { error, value } = userSchema.validate(userData);
+    const { error, value } = userSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const user = await userRepository.createUser(value);
+    const user = await userRepository.create(value);
     return user;
   };
 
-  updateUser = async (
-    id: string,
-    updatedUserData: User
-  ): Promise<User | null> => {
-    const isExist = await userRepository.getUserById(id);
+  update = async (id: string, updateData: User): Promise<User | null> => {
+    const isExist = await userRepository.getById(id);
     if (!isExist) {
       throw new NotFoundError("User not found");
     }
 
-    if (isExist.email != updatedUserData.email) {
-      const isEmailExist = await userRepository.getUserByEmail(
-        updatedUserData.email
-      );
+    if (isExist.email != updateData.email) {
+      const isEmailExist = await userRepository.getByEmail(updateData.email);
 
       if (isEmailExist) {
         throw new ValidationError("Email already exists");
       }
     }
 
-    const { error, value } = userSchema.validate(updatedUserData);
+    const { error, value } = userSchema.validate(updateData);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const user = await userRepository.updateUser(id, value);
+    const user = await userRepository.update(id, value);
     return user;
   };
 
-  deleteUser = async (id: string): Promise<void> => {
-    const isExist = await userRepository.getUserById(id);
+  delete = async (id: string): Promise<void> => {
+    const isExist = await userRepository.getById(id);
     if (!isExist) {
       throw new NotFoundError("User not found");
     }
-    await userRepository.deleteUser(id);
+    await userRepository.delete(id);
   };
 }
