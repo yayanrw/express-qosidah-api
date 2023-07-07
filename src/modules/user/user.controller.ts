@@ -3,6 +3,7 @@ import { User } from "@prisma/client";
 import { handleError } from "../../core/utils/handleError";
 import UserService from "./user.service";
 import { wrapResponse } from "../../core/utils/responseWrapper";
+import HttpStatusCode from "../../core/enum/http-status-code";
 
 const userService = new UserService();
 
@@ -30,7 +31,7 @@ export default class UserController {
     const userData: User = req.body;
     try {
       const user = await userService.createUser(userData);
-      res.status(201).json(user);
+      wrapResponse({ res, data: user, statusCode: HttpStatusCode.CREATED });
     } catch (error) {
       handleError(res, error);
     }
