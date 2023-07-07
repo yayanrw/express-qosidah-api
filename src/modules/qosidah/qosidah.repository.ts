@@ -1,52 +1,51 @@
-import { KeywordQosidah } from "@prisma/client";
+import { Qosidah } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
 
-export default class KeywordQosidahRepository {
-  getAll = async (): Promise<KeywordQosidah[]> => {
-    const users = await prisma.keywordQosidah.findMany();
-    return users;
+export default class QosidahRepository {
+  getAll = async (): Promise<Qosidah[]> => {
+    const qosidahs = await prisma.qosidah.findMany({
+      include: {
+        keyword: true,
+      },
+    });
+    return qosidahs;
   };
 
-  getById = async (id: string): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.findUnique({
+  getById = async (id: string): Promise<Qosidah | null> => {
+    const qosidah = await prisma.qosidah.findUnique({
       where: {
         id,
       },
-    });
-    return user;
-  };
-
-  getByKeyword = async (keyword: string): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.findUnique({
-      where: {
-        keyword,
+      include: {
+        qosidahDetail: true,
+        keyword: true,
       },
     });
-    return user;
+    return qosidah;
   };
 
-  create = async (data: KeywordQosidah): Promise<KeywordQosidah> => {
-    const user = await prisma.keywordQosidah.create({
+  create = async (data: Qosidah): Promise<Qosidah> => {
+    const qosidah = await prisma.qosidah.create({
       data: data,
     });
-    return user;
+    return qosidah;
   };
 
   update = async (
     id: string,
-    updatedData: KeywordQosidah
-  ): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.update({
+    updatedData: Qosidah
+  ): Promise<Qosidah | null> => {
+    const qosidah = await prisma.qosidah.update({
       where: {
         id,
       },
       data: updatedData,
     });
-    return user;
+    return qosidah;
   };
 
   delete = async (id: string): Promise<void> => {
-    await prisma.keywordQosidah.delete({
+    await prisma.qosidah.delete({
       where: {
         id,
       },
