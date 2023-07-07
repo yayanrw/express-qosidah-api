@@ -40,9 +40,10 @@ export default class UserController {
   updateUser = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const updatedUserData: User = req.body;
+    
     try {
       const user = await userService.updateUser(id, updatedUserData);
-      res.json(user);
+      wrapResponse({ res, data: user, message: "User updated" });
     } catch (error) {
       handleError(res, error);
     }
@@ -52,7 +53,7 @@ export default class UserController {
     const { id } = req.params;
     try {
       await userService.deleteUser(id);
-      res.status(204).end();
+      wrapResponse({ res, message: "User deleted" });
     } catch (error) {
       handleError(res, error);
     }
