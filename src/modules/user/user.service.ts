@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import UserRepository from "./user.repository";
-import { NotFoundError } from "../../core/utils/exceptions";
+import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
+import { createUserSchema } from "./user.schema";
 
 const userRepository = new UserRepository();
 
@@ -18,7 +19,19 @@ export default class UserService {
   };
 
   createUser = async (userData: User): Promise<User> => {
-    const user = await userRepository.createUser(userData);
+    const isEmailExist = await userRepository.getUserByEmail(userData.email);
+
+    if (isEmailExist) {
+      throw new ValidationError("Email already exists");
+    }
+
+    const { error, value } = createUserSchema.validate(userData);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
+    const user = await userRepository.createUser(value);
     return user;
   };
 
