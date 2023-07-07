@@ -1,5 +1,5 @@
 import { Router } from "express";
-import KeywordQosidahController from "../modules/keyword_qosidah/keyword_qosidah.controller";
+import KeywordQosidahController from "./keyword_qosidah.controller";
 
 const router = Router();
 const keywordQosidahController = new KeywordQosidahController();
