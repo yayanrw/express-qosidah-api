@@ -18,12 +18,16 @@ export default class QosidahDetailService {
     return qosidahDetail;
   };
 
-  getByQosudahId = async (id: string): Promise<QosidahDetail[] | null> => {
-    const qosidahDetail = await qosidahDetailRepository.getByQosidahId(id);
-    if (!qosidahDetail) {
+  getByQosudahId = async (
+    qosidahId: string
+  ): Promise<QosidahDetail[] | null> => {
+    const qosidahDetails = await qosidahDetailRepository.getByQosidahId(
+      qosidahId
+    );
+    if (!qosidahDetails) {
       throw new NotFoundError("Qosidah Detail not found");
     }
-    return qosidahDetail;
+    return qosidahDetails;
   };
 
   create = async (data: QosidahDetail): Promise<QosidahDetail> => {
