@@ -27,6 +27,19 @@ export default class QosidahDetailRepository {
     return qosidahDetail;
   };
 
+  getByQosidahIdAndOrder = async (
+    order: number,
+    qosidahId: string
+  ): Promise<QosidahDetail | null> => {
+    const qosidahDetail = await prisma.qosidahDetail.findFirst({
+      where: {
+        order: order,
+        qosidahId: qosidahId,
+      },
+    });
+    return qosidahDetail;
+  };
+
   create = async (data: QosidahDetail): Promise<QosidahDetail> => {
     const qosidahDetail = await prisma.qosidahDetail.create({
       data: data,

@@ -21,7 +21,7 @@ export default class QosidahDetailController {
 
   getByQosidahId = wrapAsync(async (req: Request, res: Response) => {
     const { qosidahId } = req.params;
-    const qosidahDetails = await qosidahDetailService.getByQosudahId(qosidahId);
+    const qosidahDetails = await qosidahDetailService.getByQosidahId(qosidahId);
     wrapResponse({ res, data: qosidahDetails });
   });
 

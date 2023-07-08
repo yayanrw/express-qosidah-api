@@ -18,7 +18,7 @@ export default class QosidahDetailService {
     return qosidahDetail;
   };
 
-  getByQosudahId = async (
+  getByQosidahId = async (
     qosidahId: string
   ): Promise<QosidahDetail[] | null> => {
     const qosidahDetails = await qosidahDetailRepository.getByQosidahId(
@@ -37,6 +37,15 @@ export default class QosidahDetailService {
       throw new ValidationError(error.message);
     }
 
+    const isExist = await qosidahDetailRepository.getByQosidahIdAndOrder(
+      data.order,
+      data.qosidahId
+    );
+
+    if (isExist) {
+      throw new ValidationError("Qosidah Detail is already exist");
+    }
+
     const qosidahDetail = await qosidahDetailRepository.create(value);
     return qosidahDetail;
   };
@@ -45,15 +54,15 @@ export default class QosidahDetailService {
     id: string,
     updateData: QosidahDetail
   ): Promise<QosidahDetail | null> => {
-    const isExist = await qosidahDetailRepository.getById(id);
-    if (!isExist) {
-      throw new NotFoundError("Qosidah Detail not found");
-    }
-
     const { error, value } = qosidahDetailSchema.validate(updateData);
 
     if (error) {
       throw new ValidationError(error.message);
+    }
+
+    const isExist = await qosidahDetailRepository.getById(id);
+    if (!isExist) {
+      throw new NotFoundError("Qosidah Detail not found");
     }
 
     const qosidahDetail = await qosidahDetailRepository.update(id, value);
