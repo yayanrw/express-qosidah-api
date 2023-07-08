@@ -39,6 +39,12 @@ export default class KeywordQosidahService {
     id: string,
     updateData: KeywordQosidah
   ): Promise<KeywordQosidah | null> => {
+    const { error, value } = keywordQosidahSchema.validate(updateData);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
     const isExist = await keywordQosidahRepository.getById(id);
     if (!isExist) {
       throw new NotFoundError("Keyword Qosidah not found");
@@ -52,12 +58,6 @@ export default class KeywordQosidahService {
       if (isExist) {
         throw new ValidationError("Keyword Qosidah already exists");
       }
-    }
-
-    const { error, value } = keywordQosidahSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
     }
 
     const user = await keywordQosidahRepository.update(id, value);
