@@ -19,16 +19,16 @@ export default class KeywordQosidahService {
   };
 
   create = async (data: KeywordQosidah): Promise<KeywordQosidah> => {
-    const isExist = await keywordQosidahRepository.getByKeyword(data.keyword);
-
-    if (isExist) {
-      throw new ValidationError("Keyword Qosidah already exists");
-    }
-
     const { error, value } = keywordQosidahSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
+    }
+
+    const isExist = await keywordQosidahRepository.getByKeyword(data.keyword);
+
+    if (isExist) {
+      throw new ValidationError("Keyword Qosidah already exists");
     }
 
     const user = await keywordQosidahRepository.create(value);
