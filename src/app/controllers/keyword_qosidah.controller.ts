@@ -3,7 +3,7 @@ import { KeywordQosidah } from "@prisma/client";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
-import KeywordQosidahService from "./keyword_qosidah.service";
+import KeywordQosidahService from "../services/keyword_qosidah.service";
 
 const keywordQosidahService = new KeywordQosidahService();
 

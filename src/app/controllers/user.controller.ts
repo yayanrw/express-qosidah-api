@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "@prisma/client";
-import UserService from "./user.service";
+import UserService from "../services/user.service";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";

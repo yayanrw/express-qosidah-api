@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
-import UserRepository from "./user.repository";
+import UserRepository from "../repositories/user.repository";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { userSchema } from "./user.schema";
+import { userSchema } from "../validations/user.schema";
 
 const userRepository = new UserRepository();
 

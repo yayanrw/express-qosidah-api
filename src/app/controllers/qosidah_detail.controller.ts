@@ -3,7 +3,7 @@ import { QosidahDetail } from "@prisma/client";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
-import QosidahDetailService from "./qosidah_detail.service";
+import QosidahDetailService from "../services/qosidah_detail.service";
 
 const qosidahDetailService = new QosidahDetailService();
 

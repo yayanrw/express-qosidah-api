@@ -1,8 +1,8 @@
 import { QosidahDetail } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { qosidahDetailSchema } from "./qosidah_detail.schema";
-import QosidahDetailRepository from "./qosidah_detail.repository";
-import QosidahRepository from "../qosidah/qosidah.repository";
+import { qosidahDetailSchema } from "../validations/qosidah_detail.schema";
+import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
+import QosidahRepository from "../repositories/qosidah.repository";
 
 const qosidahDetailRepository = new QosidahDetailRepository();
 const qosidahRepository = new QosidahRepository();

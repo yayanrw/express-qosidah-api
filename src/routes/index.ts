@@ -1,8 +1,8 @@
 import { Router } from "express";
-import userRoutes from "../modules/user/user.routes";
-import keywordQosidahRoutes from "../modules/keyword_qosidah/keyword_qosidah.routes";
-import qosidahRoutes from "../modules/qosidah/qosidah.routes";
-import qosidahDetailRoutes from "../modules/qosidah_detail/qosidah_detail.routes";
+import userRoutes from "./user.routes";
+import keywordQosidahRoutes from "./keyword_qosidah.routes";
+import qosidahRoutes from "./qosidah.routes";
+import qosidahDetailRoutes from "./qosidah_detail.routes";
 import { wrapResponse } from "../core/utils/wrapResponse";
 import HttpStatusCode from "../core/enum/http-status-code";
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import QosidahDetailController from "./qosidah_detail.controller";
+import QosidahDetailController from "../app/controllers/qosidah_detail.controller";
 
 const router = Router();
 const qosidahDetailController = new QosidahDetailController();

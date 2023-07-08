@@ -1,7 +1,7 @@
 import { KeywordQosidah } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { keywordQosidahSchema } from "./keyword_qosidah.schema";
-import KeywordQosidahRepository from "./keyword_qosidah.repository";
+import { keywordQosidahSchema } from "../validations/keyword_qosidah.schema";
+import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
 
 const keywordQosidahRepository = new KeywordQosidahRepository();
 
