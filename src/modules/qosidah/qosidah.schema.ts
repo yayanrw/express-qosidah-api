@@ -12,6 +12,7 @@ const createQosidahSchema = Joi.object({
   titleLatin: Joi.string().allow(null).optional(),
   titleTranslate: Joi.string().allow(null).optional(),
   keyword: Joi.array().items(Joi.string()).optional(),
+  published: Joi.boolean().default(false).optional(),
   qosidahDetail: Joi.array().items(createQosidahDetailSchema).required(),
 });
 
@@ -19,7 +20,10 @@ const updateQosidahSchema = Joi.object({
   title: Joi.string().required(),
   titleLatin: Joi.string().allow(null).optional(),
   titleTranslate: Joi.string().allow(null).optional(),
+  published: Joi.boolean().default(false).optional(),
   keyword: Joi.array().items(Joi.string()).optional(),
 });
 
-export { createQosidahSchema, updateQosidahSchema };
+const updatePublishedQosidahSchema = Joi.boolean().required();
+
+export { createQosidahSchema, updateQosidahSchema, updatePublishedQosidahSchema };

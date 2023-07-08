@@ -3,6 +3,7 @@ interface QosidahDto {
   titleLatin?: string;
   titleTranslate?: string;
   keyword?: string[];
+  published?: boolean;
   qosidahDetail: QosidahDetailDto[];
 }
 

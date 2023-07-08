@@ -127,6 +127,20 @@ export default class QosidahRepository {
     return updateQosidah;
   };
 
+  updatePublished = async (
+    id: string,
+    published: boolean
+  ): Promise<Qosidah> => {
+    const updateQosidah = await prisma.qosidah.update({
+      where: { id },
+      data: {
+        published,
+      },
+    });
+
+    return updateQosidah;
+  };
+
   delete = async (id: string): Promise<void> => {
     await prisma.qosidah.delete({
       where: {

@@ -10,7 +10,6 @@ const qosidahService = new QosidahService();
 export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
     const { published } = req.query;
-    console.log(req.query);
 
     const qosidahs = await qosidahService.getAll(published?.toString());
     wrapResponse({ res, data: qosidahs });
@@ -39,6 +38,17 @@ export default class QosidahController {
     const { id } = req.params;
     const updatedData: QosidahDto = req.body;
     const qosidah = await qosidahService.update(id, updatedData);
+    wrapResponse({
+      res,
+      data: qosidah,
+      message: "Qosidah updated",
+    });
+  });
+
+  updatePublished = wrapAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { published } = req.body;
+    const qosidah = await qosidahService.updatePublished(id, published);
     wrapResponse({
       res,
       data: qosidah,

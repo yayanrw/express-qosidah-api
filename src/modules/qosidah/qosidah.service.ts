@@ -1,6 +1,6 @@
 import { Qosidah } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { createQosidahSchema, updateQosidahSchema } from "./qosidah.schema";
+import { createQosidahSchema, updatePublishedQosidahSchema, updateQosidahSchema } from "./qosidah.schema";
 import QosidahRepository from "./qosidah.repository";
 import { QosidahDto } from "./qosidah.dto";
 import KeywordQosidahRepository from "../keyword_qosidah/keyword_qosidah.repository";
@@ -77,6 +77,21 @@ export default class QosidahService {
       qosidah: value,
       keywordIds: value.keyword,
     });
+
+    return qosidah;
+  };
+
+  updatePublished = async (
+    id: string,
+    published: boolean,
+  ): Promise<Qosidah | null> => {
+    const { error, value } = updatePublishedQosidahSchema.validate(published);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
+    const qosidah = await qosidahRepository.updatePublished(id, value);
 
     return qosidah;
   };
