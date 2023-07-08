@@ -6,7 +6,7 @@ import {
   updateQosidahSchema,
 } from "../validations/qosidah.schema";
 import QosidahRepository from "../repositories/qosidah.repository";
-import { QosidahDto } from "../dtos/qosidah.dto";
+import QosidahDto from "../dtos/qosidah.dto";
 import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
 import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
 

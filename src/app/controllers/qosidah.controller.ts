@@ -3,7 +3,7 @@ import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahService from "../services/qosidah.service";
-import { QosidahDto } from "../dtos/qosidah.dto";
+import QosidahDto from "../dtos/qosidah.dto";
 
 const qosidahService = new QosidahService();
 

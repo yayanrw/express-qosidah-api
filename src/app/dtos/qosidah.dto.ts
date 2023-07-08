@@ -1,4 +1,6 @@
-interface QosidahDto {
+import QosidahDetailDto from "./qosidah_detail.dto";
+
+export default interface QosidahDto {
   title: string;
   titleLatin?: string;
   titleTranslate?: string;
@@ -6,12 +8,3 @@ interface QosidahDto {
   published?: boolean;
   qosidahDetail: QosidahDetailDto[];
 }
-
-interface QosidahDetailDto {
-  order: number;
-  lyrics: string;
-  lyricsLatin?: string;
-  lyricsTranslate?: string;
-}
-
-export { QosidahDto, QosidahDetailDto };
