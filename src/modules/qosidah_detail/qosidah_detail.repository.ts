@@ -54,4 +54,12 @@ export default class QosidahDetailRepository {
       },
     });
   };
+
+  deleteByQosidahId = async (qosidahId: string): Promise<void> => {
+    await prisma.qosidahDetail.deleteMany({
+      where: {
+        qosidahId: qosidahId,
+      },
+    });
+  };
 }
