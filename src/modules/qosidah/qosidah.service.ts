@@ -6,8 +6,8 @@ import QosidahRepository from "./qosidah.repository";
 const qosidahRepository = new QosidahRepository();
 
 export default class QosidahService {
-  getAll = async (): Promise<Qosidah[]> => {
-    return qosidahRepository.getAll();
+  getAll = async (published?: string): Promise<Qosidah[]> => {
+    return qosidahRepository.getAll(published === "true");
   };
 
   getById = async (id: string): Promise<Qosidah | null> => {

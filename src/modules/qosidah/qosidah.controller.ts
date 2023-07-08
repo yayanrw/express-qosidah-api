@@ -9,7 +9,10 @@ const qosidahService = new QosidahService();
 
 export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
-    const qosidahs = await qosidahService.getAll();
+    const { published } = req.query;
+    console.log(req.query);
+
+    const qosidahs = await qosidahService.getAll(published?.toString());
     wrapResponse({ res, data: qosidahs });
   });
 
