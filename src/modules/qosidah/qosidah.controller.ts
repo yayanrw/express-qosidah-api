@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Qosidah } from "@prisma/client";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
@@ -38,7 +37,7 @@ export default class QosidahController {
 
   update = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const updatedData: Qosidah = req.body;
+    const updatedData: QosidahDto = req.body;
     const qosidah = await qosidahService.update(id, updatedData);
     wrapResponse({
       res,
