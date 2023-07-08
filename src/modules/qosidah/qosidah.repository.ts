@@ -45,8 +45,19 @@ export default class QosidahRepository {
         id,
       },
       include: {
+        author: {
+          select: {
+            id: true,
+            name: true,
+          }
+        },
         qosidahDetail: true,
-        keyword: true,
+        keyword: {
+          select: {
+            id: true,
+            keyword: true,
+          },
+        },
       },
     });
     return qosidah;
