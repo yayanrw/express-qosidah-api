@@ -1,12 +1,14 @@
 import { Qosidah } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { createQosidahSchema } from "./qosidah.schema";
+import { createQosidahSchema, updateQosidahSchema } from "./qosidah.schema";
 import QosidahRepository from "./qosidah.repository";
 import { QosidahDto } from "./qosidah.dto";
 import KeywordQosidahRepository from "../keyword_qosidah/keyword_qosidah.repository";
+import QosidahDetailRepository from "../qosidah_detail/qosidah_detail.repository";
 
 const qosidahRepository = new QosidahRepository();
 const keywordQosidahRepository = new KeywordQosidahRepository();
+const qosidahDetailRepository = new QosidahDetailRepository();
 
 export default class QosidahService {
   getAll = async (published?: string): Promise<Qosidah[]> => {
@@ -48,19 +50,34 @@ export default class QosidahService {
     return qosidah;
   };
 
-  update = async (id: string, updateData: Qosidah): Promise<Qosidah | null> => {
-    const isExist = await qosidahRepository.getById(id);
-    if (!isExist) {
-      throw new NotFoundError("Qosidah not found");
-    }
-
-    const { error, value } = createQosidahSchema.validate(updateData);
+  update = async (
+    id: string,
+    updateData: QosidahDto
+  ): Promise<Qosidah | null> => {
+    const { error, value } = updateQosidahSchema.validate(updateData);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const qosidah = await qosidahRepository.update(id, value);
+    if (updateData.keyword) {
+      await Promise.all(
+        updateData.keyword.map(async (keyword) => {
+          const isExist = await keywordQosidahRepository.getById(keyword);
+          console.log(isExist);
+
+          if (!isExist) {
+            throw new ValidationError("Keyword not found");
+          }
+        })
+      );
+    }
+
+    const qosidah = await qosidahRepository.update(id, {
+      qosidah: value,
+      keywordIds: value.keyword,
+    });
+
     return qosidah;
   };
 
@@ -69,6 +86,8 @@ export default class QosidahService {
     if (!isExist) {
       throw new NotFoundError("Qosidah not found");
     }
+
+    await qosidahDetailRepository.deleteByQosidahId(id);
     await qosidahRepository.delete(id);
   };
 }
