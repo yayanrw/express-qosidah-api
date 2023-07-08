@@ -2,8 +2,10 @@ import { QosidahDetail } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
 import { qosidahDetailSchema } from "./qosidah_detail.schema";
 import QosidahDetailRepository from "./qosidah_detail.repository";
+import QosidahRepository from "../qosidah/qosidah.repository";
 
 const qosidahDetailRepository = new QosidahDetailRepository();
+const qosidahRepository = new QosidahRepository();
 
 export default class QosidahDetailService {
   getAll = async (): Promise<QosidahDetail[]> => {
@@ -37,12 +39,19 @@ export default class QosidahDetailService {
       throw new ValidationError(error.message);
     }
 
-    const isExist = await qosidahDetailRepository.getByQosidahIdAndOrder(
-      data.order,
-      data.qosidahId
-    );
+    const isQosidahExist = await qosidahRepository.getById(data.qosidahId);
 
-    if (isExist) {
+    if (!isQosidahExist) {
+      throw new ValidationError("Qosidah not found");
+    }
+
+    const isQosidahOrderExist =
+      await qosidahDetailRepository.getByQosidahIdAndOrder(
+        data.order,
+        data.qosidahId
+      );
+
+    if (isQosidahOrderExist) {
       throw new ValidationError("Qosidah Detail is already exist");
     }
 
