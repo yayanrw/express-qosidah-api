@@ -15,4 +15,11 @@ const createQosidahSchema = Joi.object({
   qosidahDetail: Joi.array().items(createQosidahDetailSchema).required(),
 });
 
-export { createQosidahSchema };
+const updateQosidahSchema = Joi.object({
+  title: Joi.string().required(),
+  titleLatin: Joi.string().allow(null).optional(),
+  titleTranslate: Joi.string().allow(null).optional(),
+  keyword: Joi.array().items(Joi.string()).optional(),
+});
+
+export { createQosidahSchema, updateQosidahSchema };
