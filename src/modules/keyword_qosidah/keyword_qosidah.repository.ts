@@ -3,46 +3,46 @@ import prisma from "../../core/config/prisma.config";
 
 export default class KeywordQosidahRepository {
   getAll = async (): Promise<KeywordQosidah[]> => {
-    const users = await prisma.keywordQosidah.findMany();
-    return users;
+    const keywordQosidahs = await prisma.keywordQosidah.findMany();
+    return keywordQosidahs;
   };
 
   getById = async (id: string): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.findUnique({
+    const keywordQosidah = await prisma.keywordQosidah.findUnique({
       where: {
         id,
       },
     });
-    return user;
+    return keywordQosidah;
   };
 
   getByKeyword = async (keyword: string): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.findUnique({
+    const keywordQosidah = await prisma.keywordQosidah.findUnique({
       where: {
         keyword,
       },
     });
-    return user;
+    return keywordQosidah;
   };
 
   create = async (data: KeywordQosidah): Promise<KeywordQosidah> => {
-    const user = await prisma.keywordQosidah.create({
+    const keywordQosidah = await prisma.keywordQosidah.create({
       data: data,
     });
-    return user;
+    return keywordQosidah;
   };
 
   update = async (
     id: string,
     updatedData: KeywordQosidah
   ): Promise<KeywordQosidah | null> => {
-    const user = await prisma.keywordQosidah.update({
+    const keywordQosidah = await prisma.keywordQosidah.update({
       where: {
         id,
       },
       data: updatedData,
     });
-    return user;
+    return keywordQosidah;
   };
 
   delete = async (id: string): Promise<void> => {
