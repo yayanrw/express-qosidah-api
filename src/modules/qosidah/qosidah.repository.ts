@@ -104,15 +104,27 @@ export default class QosidahRepository {
 
   update = async (
     id: string,
-    updatedData: Qosidah
-  ): Promise<Qosidah | null> => {
-    const qosidah = await prisma.qosidah.update({
-      where: {
-        id,
+    {
+      qosidah,
+      keywordIds,
+    }: {
+      qosidah: Qosidah;
+      keywordIds?: string[];
+    }
+  ): Promise<Qosidah> => {
+    const updateQosidah = await prisma.qosidah.update({
+      where: { id },
+      data: {
+        ...qosidah,
+        keyword: {
+          set: keywordIds
+            ? keywordIds.map((keywordId) => ({ id: keywordId }))
+            : [],
+        },
       },
-      data: updatedData,
     });
-    return qosidah;
+
+    return updateQosidah;
   };
 
   delete = async (id: string): Promise<void> => {
