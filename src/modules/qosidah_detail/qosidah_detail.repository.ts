@@ -12,6 +12,9 @@ export default class QosidahDetailRepository {
       where: {
         id,
       },
+      include: {
+        qosidah: true,
+      },
     });
     return qosidahDetail;
   };
