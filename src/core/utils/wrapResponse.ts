@@ -1,5 +1,5 @@
 import { Response } from "express";
-import ApiResponse from "../interface/api_response";
+import ApiResponse from "../interface/api_response.interface";
 import HttpStatusCode from "../enum/http-status-code";
 
 export function wrapResponse<T>({
