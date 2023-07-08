@@ -19,16 +19,16 @@ export default class UserService {
   };
 
   create = async (data: User): Promise<User> => {
-    const isEmailExist = await userRepository.getByEmail(data.email);
-
-    if (isEmailExist) {
-      throw new ValidationError("Email already exists");
-    }
-
     const { error, value } = userSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
+    }
+
+    const isEmailExist = await userRepository.getByEmail(data.email);
+
+    if (isEmailExist) {
+      throw new ValidationError("Email already exists");
     }
 
     const user = await userRepository.create(value);
@@ -36,6 +36,12 @@ export default class UserService {
   };
 
   update = async (id: string, updateData: User): Promise<User | null> => {
+    const { error, value } = userSchema.validate(updateData);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
     const isExist = await userRepository.getById(id);
     if (!isExist) {
       throw new NotFoundError("User not found");
@@ -47,12 +53,6 @@ export default class UserService {
       if (isEmailExist) {
         throw new ValidationError("Email already exists");
       }
-    }
-
-    const { error, value } = userSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
     }
 
     const user = await userRepository.update(id, value);
