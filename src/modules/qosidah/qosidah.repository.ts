@@ -8,11 +8,21 @@ export default class QosidahRepository {
         published: boolean;
       };
       include: {
-        keyword: boolean;
+        keyword: {
+          select: {
+            id: true;
+            keyword: true;
+          };
+        };
       };
     } = {
       include: {
-        keyword: true,
+        keyword: {
+          select: {
+            id: true,
+            keyword: true,
+          },
+        },
       },
     };
 
