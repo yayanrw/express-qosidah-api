@@ -2,8 +2,11 @@ import { Qosidah } from "@prisma/client";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
 import { createQosidahSchema } from "./qosidah.schema";
 import QosidahRepository from "./qosidah.repository";
+import { QosidahDto } from "./qosidah.dto";
+import KeywordQosidahRepository from "../keyword_qosidah/keyword_qosidah.repository";
 
 const qosidahRepository = new QosidahRepository();
+const keywordQosidahRepository = new KeywordQosidahRepository();
 
 export default class QosidahService {
   getAll = async (published?: string): Promise<Qosidah[]> => {
@@ -18,14 +21,30 @@ export default class QosidahService {
     return qosidah;
   };
 
-  create = async (data: Qosidah): Promise<Qosidah> => {
+  create = async (data: QosidahDto): Promise<Qosidah> => {
     const { error, value } = createQosidahSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
     }
 
-    const qosidah = await qosidahRepository.create(value);
+    if (data.keyword) {
+      await Promise.all(
+        data.keyword.map(async (keyword) => {
+          const isExist = await keywordQosidahRepository.getById(keyword);
+
+          if (!isExist) {
+            throw new ValidationError("Keyword not found");
+          }
+        })
+      );
+    }
+
+    const qosidah = await qosidahRepository.create({
+      qosidah: value,
+      keywordIds: value.keyword,
+      detailQosidah: value.qosidahDetail,
+    });
     return qosidah;
   };
 

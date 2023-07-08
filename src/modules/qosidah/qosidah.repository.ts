@@ -1,4 +1,4 @@
-import { Qosidah } from "@prisma/client";
+import { Qosidah, QosidahDetail } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
 
 export default class QosidahRepository {
@@ -49,13 +49,27 @@ export default class QosidahRepository {
           select: {
             id: true,
             name: true,
-          }
+          },
         },
-        qosidahDetail: true,
+        qosidahDetail: {
+          select: {
+            id: true,
+            order: true,
+            lyrics: true,
+            lyricsLatin: true,
+            lyricsTranslate: true,
+          },
+          orderBy: {
+            order: "asc",
+          },
+        },
         keyword: {
           select: {
             id: true,
             keyword: true,
+          },
+          orderBy: {
+            keyword: "asc",
           },
         },
       },
@@ -63,11 +77,29 @@ export default class QosidahRepository {
     return qosidah;
   };
 
-  create = async (data: Qosidah): Promise<Qosidah> => {
-    const qosidah = await prisma.qosidah.create({
-      data: data,
+  create = async ({
+    qosidah,
+    keywordIds,
+    detailQosidah,
+  }: {
+    qosidah: Qosidah;
+    keywordIds?: string[];
+    detailQosidah?: QosidahDetail[];
+  }): Promise<Qosidah> => {
+    const createQosidah = await prisma.qosidah.create({
+      data: {
+        ...qosidah,
+        keyword: {
+          connect: keywordIds
+            ? keywordIds.map((keywordId) => ({ id: keywordId }))
+            : [],
+        },
+        qosidahDetail: {
+          create: detailQosidah,
+        },
+      },
     });
-    return qosidah;
+    return createQosidah;
   };
 
   update = async (

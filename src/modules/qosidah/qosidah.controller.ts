@@ -4,6 +4,7 @@ import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahService from "./qosidah.service";
+import { QosidahDto } from "./qosidah.dto";
 
 const qosidahService = new QosidahService();
 
@@ -23,8 +24,10 @@ export default class QosidahController {
   });
 
   create = wrapAsync(async (req: Request, res: Response) => {
-    const data: Qosidah = req.body;
+    const data: QosidahDto = req.body;
+
     const qosidah = await qosidahService.create(data);
+
     wrapResponse({
       res,
       data: qosidah,
