@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import UserRepository from "../repositories/user.repository";
 import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
 import { userSchema } from "../validations/user.schema";
+import bcrypt from "bcrypt";
 
 const userRepository = new UserRepository();
 
@@ -30,6 +31,7 @@ export default class UserService {
     if (isEmailExist) {
       throw new ValidationError("Email already exists");
     }
+    value.password = await bcrypt.hash(data.password, 10);
 
     const user = await userRepository.create(value);
     return user;
