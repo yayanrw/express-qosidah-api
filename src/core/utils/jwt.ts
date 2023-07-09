@@ -4,7 +4,7 @@ import User from "../interface/user.interface";
 import { AuthenticationError } from "./exceptions";
 
 const createToken = (user: User): string => {
-  return jwt.sign({ id: user.id }, JWT_SECRET as jwt.Secret, {
+  return jwt.sign(user, JWT_SECRET as jwt.Secret, {
     expiresIn: JWT_EXPIRATION,
   });
 };
