@@ -5,7 +5,10 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
-import { userSchema } from "../validations/user.validation";
+import {
+  createUserSchema,
+  updateUserSchema,
+} from "../validations/user.validation";
 import bcrypt from "bcrypt";
 
 const userRepository = new UserRepository();
@@ -24,7 +27,7 @@ export default class UserService {
   };
 
   create = async (data: User): Promise<User> => {
-    const { error, value } = userSchema.validate(data);
+    const { error, value } = createUserSchema.validate(data);
 
     if (error) {
       throw new ValidationError(error.message);
@@ -42,7 +45,7 @@ export default class UserService {
   };
 
   update = async (id: string, updateData: User): Promise<User | null> => {
-    const { error, value } = userSchema.validate(updateData);
+    const { error, value } = updateUserSchema.validate(updateData);
 
     if (error) {
       throw new ValidationError(error.message);
