@@ -20,6 +20,7 @@ model User {
   email String @unique
   name String?
   role Role
+  password String
   createdAt DateTime @default(now())
   qosidahs Qosidah []
 }
