@@ -2,12 +2,20 @@
 import { wrapResponse } from "./wrapResponse";
 import HttpStatusCode from "../enum/http-status-code";
 import { Response } from "express";
-import { BadRequestError, NotFoundError, ValidationError } from "./exceptions";
+import {
+  AuthenticationError,
+  AuthorizationError,
+  BadRequestError,
+  NotFoundError,
+  ValidationError,
+} from "./exceptions";
 
 const errorMappings: { [key: string]: any } = {
   NotFoundError: NotFoundError,
   BadRequestError: BadRequestError,
   ValidationError: ValidationError,
+  AuthenticationError: AuthenticationError,
+  AuthorizationError: AuthorizationError,
 };
 
 export function handleError(res: Response, error: any) {
@@ -16,7 +24,7 @@ export function handleError(res: Response, error: any) {
 
   for (const key in errorMappings) {
     if (error instanceof errorMappings[key]) {
-      errorType = key;
+      errorType = error.errorType;
       statusCode = error.statusCode;
       break;
     }
