@@ -12,6 +12,30 @@ export class NotFoundError extends Error {
   }
 }
 
+export class AuthenticationError extends Error {
+  statusCode: number;
+  errorType: string;
+
+  constructor(message: string) {
+    super(message);
+    this.errorType = "UNAUTHENTICATED";
+    this.statusCode = HttpStatusCode.UNAUTHORIZED;
+    this.message = message;
+  }
+}
+
+export class AuthorizationError extends Error {
+  statusCode: number;
+  errorType: string;
+
+  constructor(message: string) {
+    super(message);
+    this.errorType = "UNAUTHORIZED";
+    this.statusCode = HttpStatusCode.FORBIDDEN;
+    this.message = message;
+  }
+}
+
 export class ValidationError extends Error {
   statusCode: number;
   errorType: string;
