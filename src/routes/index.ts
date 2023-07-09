@@ -8,6 +8,7 @@ import { wrapResponse } from "../core/utils/wrapResponse";
 import HttpStatusCode from "../core/enum/http-status-code";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { adminMiddleware } from "../middlewares/admin.middleware";
+import { Request, Response } from "express";
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router.use("/qosidahs", authMiddleware, qosidahRoutes);
 router.use("/qosidah-details", authMiddleware, qosidahDetailRoutes);
 
 // not found page
-router.get("*", function (req, res) {
+router.get("*", function (req: Request, res: Response) {
   wrapResponse({
     res,
     error: "NOT_FOUND",
