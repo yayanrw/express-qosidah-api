@@ -15,7 +15,7 @@ const userRepository = new UserRepository();
 const jwtRepository = new JwtRepository();
 
 export default class AuthService {
-  async logIn(logInDto: LogInDto): Promise<UserTokenDto> {
+  logIn = async (logInDto: LogInDto): Promise<UserTokenDto> => {
     const { error } = logInSchema.validate(logInDto);
 
     if (error) {
@@ -24,7 +24,7 @@ export default class AuthService {
 
     const user: User | null = await userRepository.getByEmail(logInDto.email);
     if (!user) {
-      throw new AuthenticationError("Email is invalid");
+      throw new AuthenticationError("Email is not registered");
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -42,5 +42,5 @@ export default class AuthService {
     );
 
     return userToken;
-  }
+  };
 }
