@@ -1,9 +1,18 @@
 import { User } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
+import { UserDto } from "../dtos/user.dto";
 
 export default class UserRepository {
-  getAll = async (): Promise<User[]> => {
-    const users = await prisma.user.findMany();
+  getAll = async (): Promise<UserDto[]> => {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    });
     return users;
   };
 
@@ -32,7 +41,7 @@ export default class UserRepository {
     return user;
   };
 
-  update = async (id: string, updatedData: User): Promise<User | null> => {
+  update = async (id: string, updatedData: User): Promise<User> => {
     const user = await prisma.user.update({
       where: {
         id,
@@ -45,7 +54,7 @@ export default class UserRepository {
   updatePassword = async (
     id: string,
     newPassword: string
-  ): Promise<User | null> => {
+  ): Promise<UserDto | null> => {
     const user = await prisma.user.update({
       where: {
         id,

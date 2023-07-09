@@ -14,23 +14,24 @@ import {
 } from "../validations/user.validation";
 import bcrypt from "bcrypt";
 import PasswordUpdateDto from "../dtos/password_update.dto";
+import { UserDto, userToUserDto } from "../dtos/user.dto";
 
 const userRepository = new UserRepository();
 
 export default class UserService {
-  getAll = async (): Promise<User[]> => {
+  getAll = async (): Promise<UserDto[]> => {
     return userRepository.getAll();
   };
 
-  getById = async (id: string): Promise<User | null> => {
+  getById = async (id: string): Promise<UserDto | null> => {
     const user = await userRepository.getById(id);
     if (!user) {
       throw new NotFoundError("User not found");
     }
-    return user;
+    return userToUserDto(user);
   };
 
-  create = async (data: User): Promise<User> => {
+  create = async (data: User): Promise<UserDto> => {
     const { error, value } = createUserSchema.validate(data);
 
     if (error) {
@@ -45,10 +46,10 @@ export default class UserService {
     value.password = await bcrypt.hash(data.password, 10);
 
     const user = await userRepository.create(value);
-    return user;
+    return userToUserDto(user);
   };
 
-  update = async (id: string, updateData: User): Promise<User | null> => {
+  update = async (id: string, updateData: User): Promise<UserDto | null> => {
     const { error, value } = updateUserSchema.validate(updateData);
 
     if (error) {
@@ -69,7 +70,7 @@ export default class UserService {
     }
 
     const user = await userRepository.update(id, value);
-    return user;
+    return userToUserDto(user);
   };
 
   updatePassword = async ({
@@ -80,13 +81,12 @@ export default class UserService {
     id: string;
     currentUserId: string;
     passwordUpdate: PasswordUpdateDto;
-  }): Promise<User | null> => {
+  }): Promise<UserDto | null> => {
     const { error, value } = updatePasswordUserSchema.validate(passwordUpdate);
 
     if (error) {
       throw new ValidationError(error.message);
     }
-    console.log(currentUserId);
 
     if (currentUserId !== id) {
       throw new AuthorizationError(
@@ -121,7 +121,7 @@ export default class UserService {
   resetPassword = async (
     id: string,
     newPassword: string
-  ): Promise<User | null> => {
+  ): Promise<UserDto | null> => {
     const { error, value } = resetPasswordUserSchema.validate(newPassword);
 
     if (error) {
