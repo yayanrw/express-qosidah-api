@@ -9,7 +9,7 @@ import UserRepository from "../repositories/user.repository";
 import { logInSchema } from "../validations/auth.validation";
 import bcrypt from "bcrypt";
 import JwtRepository from "../repositories/jwt.repository";
-import { userToUserDto } from "../dtos/user.dto";
+import { userToUserDto, userToUserDtoWithIdDto } from "../dtos/user.dto";
 
 const userRepository = new UserRepository();
 const jwtRepository = new JwtRepository();
@@ -35,7 +35,9 @@ export default class AuthService {
       throw new AuthenticationError("Password is invalid");
     }
 
-    const generatedToken = await jwtRepository.createToken(userToUserDto(user));
+    const generatedToken = await jwtRepository.createToken(
+      userToUserDtoWithIdDto(user)
+    );
     const userToken = userWithTokenToUserToken(
       userToUserDto(user),
       generatedToken
