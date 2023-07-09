@@ -6,6 +6,7 @@ import {
   AuthenticationError,
   AuthorizationError,
   BadRequestError,
+  ConflictError,
   NotFoundError,
   ValidationError,
 } from "./exceptions";
@@ -16,6 +17,7 @@ const errorMappings: { [key: string]: any } = {
   ValidationError: ValidationError,
   AuthenticationError: AuthenticationError,
   AuthorizationError: AuthorizationError,
+  ConflictError: ConflictError,
 };
 
 export function handleError(res: Response, error: any) {
