@@ -1,37 +1,23 @@
 import { User } from "@prisma/client";
 
 interface UserDto {
-  email: string;
-  name?: string | null;
-  role: string;
-}
-
-interface UserDtoWithIdDto {
   id: string;
   email: string;
   name?: string | null;
   role: string;
+  createdAt: Date;
 }
 
 function userToUserDto(user: User): UserDto {
-  const { email, name, role } = user;
-
-  return {
-    email,
-    name: name || null,
-    role,
-  };
-}
-
-function userToUserDtoWithIdDto(user: User): UserDtoWithIdDto {
-  const { id, email, name, role } = user;
+  const { id, email, name, role, createdAt } = user;
 
   return {
     id,
     email,
     name: name || null,
     role,
+    createdAt: createdAt || null,
   };
 }
 
-export { UserDto, userToUserDto, userToUserDtoWithIdDto, UserDtoWithIdDto };
+export { UserDto, userToUserDto };
