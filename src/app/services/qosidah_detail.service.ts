@@ -1,6 +1,6 @@
 import { QosidahDetail } from "@prisma/client";
 import { ConflictError, NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { qosidahDetailSchema } from "../validations/qosidah_detail.schema";
+import { qosidahDetailSchema } from "../validations/qosidah_detail.validation";
 import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
 import QosidahRepository from "../repositories/qosidah.repository";
 

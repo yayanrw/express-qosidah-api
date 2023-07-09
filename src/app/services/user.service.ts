@@ -5,7 +5,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
-import { userSchema } from "../validations/user.schema";
+import { userSchema } from "../validations/user.validation";
 import bcrypt from "bcrypt";
 
 const userRepository = new UserRepository();

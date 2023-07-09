@@ -4,7 +4,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
-import { keywordQosidahSchema } from "../validations/keyword_qosidah.schema";
+import { keywordQosidahSchema } from "../validations/keyword_qosidah.validation";
 import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
 
 const keywordQosidahRepository = new KeywordQosidahRepository();

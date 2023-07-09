@@ -4,7 +4,7 @@ import {
   createQosidahSchema,
   updatePublishedQosidahSchema,
   updateQosidahSchema,
-} from "../validations/qosidah.schema";
+} from "../validations/qosidah.validation";
 import QosidahRepository from "../repositories/qosidah.repository";
 import QosidahDto from "../dtos/qosidah.dto";
 import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
