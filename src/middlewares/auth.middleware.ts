@@ -1,9 +1,11 @@
 // authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "../core/utils/jwt";
 import { AuthenticationError } from "../core/utils/exceptions";
 import { handleError } from "../core/utils/handleError";
 import User from "../core/interface/user.interface";
+import JwtRepository from "../app/repositories/jwt.repository";
+
+const jwtRepository = new JwtRepository();
 
 export const authMiddleware = async (
   req: Request,
@@ -14,7 +16,7 @@ export const authMiddleware = async (
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1];
-      const decoded = await verifyToken(token);
+      const decoded = await jwtRepository.verifyToken(token);
       if (decoded) {
         req.user = decoded as User;
         next();
