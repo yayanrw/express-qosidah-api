@@ -24,7 +24,7 @@ export default class QosidahController {
   create = wrapAsync(async (req: Request, res: Response) => {
     const data: QosidahDto = req.body;
 
-    const qosidah = await qosidahService.create(data);
+    const qosidah = await qosidahService.create(req.user.id, data);
 
     wrapResponse({
       res,

@@ -27,7 +27,7 @@ export default class QosidahService {
     return qosidah;
   };
 
-  create = async (data: QosidahDto): Promise<Qosidah> => {
+  create = async (authorId: string, data: QosidahDto): Promise<Qosidah> => {
     const { error, value } = createQosidahSchema.validate(data);
 
     if (error) {
@@ -46,6 +46,7 @@ export default class QosidahService {
       );
     }
 
+    value.authorId = authorId;
     const qosidah = await qosidahRepository.create({
       qosidah: value,
       keywordIds: value.keyword,
