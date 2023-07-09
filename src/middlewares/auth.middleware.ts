@@ -1,25 +1,28 @@
 // authMiddleware.ts
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../core/utils/jwt";
-import { User } from "@prisma/client";
 import { AuthorizationError } from "../core/utils/exceptions";
+import { handleError } from "../core/utils/handleError";
 
 export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
-    const decoded = await verifyToken(token);
-    if (decoded) {
-      req.user = decoded as User;
-      next();
+  try {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+      const token = authHeader.split(" ")[1];
+      const decoded = await verifyToken(token);
+      if (decoded) {
+        next();
+      } else {
+        throw new AuthorizationError("Invalid token");
+      }
     } else {
-      throw new AuthorizationError("Invalid token");
+      throw new AuthorizationError("Authorization header missing");
     }
-  } else {
-    throw new AuthorizationError("Authorization header missing");
+  } catch (error) {
+    handleError(res, error);
   }
 };
