@@ -40,7 +40,7 @@ export default class QosidahService {
           const isExist = await keywordQosidahRepository.getById(keyword);
 
           if (!isExist) {
-            throw new ValidationError("Keyword not found");
+            throw new ValidationError("Keyword is not exist");
           }
         })
       );
@@ -68,10 +68,9 @@ export default class QosidahService {
       await Promise.all(
         updateData.keyword.map(async (keyword) => {
           const isExist = await keywordQosidahRepository.getById(keyword);
-          console.log(isExist);
 
           if (!isExist) {
-            throw new ValidationError("Keyword not found");
+            throw new ValidationError("Keyword is not exist");
           }
         })
       );

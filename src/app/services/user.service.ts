@@ -1,6 +1,10 @@
 import { User } from "@prisma/client";
 import UserRepository from "../repositories/user.repository";
-import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
+import {
+  ConflictError,
+  NotFoundError,
+  ValidationError,
+} from "../../core/utils/exceptions";
 import { userSchema } from "../validations/user.schema";
 import bcrypt from "bcrypt";
 
@@ -29,7 +33,7 @@ export default class UserService {
     const isEmailExist = await userRepository.getByEmail(data.email);
 
     if (isEmailExist) {
-      throw new ValidationError("Email already exists");
+      throw new ConflictError("Email already exists");
     }
     value.password = await bcrypt.hash(data.password, 10);
 
@@ -53,7 +57,7 @@ export default class UserService {
       const isEmailExist = await userRepository.getByEmail(updateData.email);
 
       if (isEmailExist) {
-        throw new ValidationError("Email already exists");
+        throw new ConflictError("Email already exists");
       }
     }
 

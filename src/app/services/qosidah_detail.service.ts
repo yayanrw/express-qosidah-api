@@ -1,5 +1,5 @@
 import { QosidahDetail } from "@prisma/client";
-import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
+import { ConflictError, NotFoundError, ValidationError } from "../../core/utils/exceptions";
 import { qosidahDetailSchema } from "../validations/qosidah_detail.schema";
 import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
 import QosidahRepository from "../repositories/qosidah.repository";
@@ -52,7 +52,7 @@ export default class QosidahDetailService {
       );
 
     if (isQosidahOrderExist) {
-      throw new ValidationError("Qosidah Detail is already exist");
+      throw new ConflictError("Qosidah Detail is already exist");
     }
 
     const qosidahDetail = await qosidahDetailRepository.create(value);

@@ -1,5 +1,9 @@
 import { KeywordQosidah } from "@prisma/client";
-import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
+import {
+  ConflictError,
+  NotFoundError,
+  ValidationError,
+} from "../../core/utils/exceptions";
 import { keywordQosidahSchema } from "../validations/keyword_qosidah.schema";
 import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
 
@@ -28,7 +32,7 @@ export default class KeywordQosidahService {
     const isExist = await keywordQosidahRepository.getByKeyword(data.keyword);
 
     if (isExist) {
-      throw new ValidationError("Keyword Qosidah already exists");
+      throw new ConflictError("Keyword Qosidah already exists");
     }
 
     const user = await keywordQosidahRepository.create(value);
@@ -56,7 +60,7 @@ export default class KeywordQosidahService {
       );
 
       if (isExist) {
-        throw new ValidationError("Keyword Qosidah already exists");
+        throw new ConflictError("Keyword Qosidah already exists");
       }
     }
 
