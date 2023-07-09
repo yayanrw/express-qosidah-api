@@ -12,6 +12,18 @@ export class NotFoundError extends Error {
   }
 }
 
+export class ConflictError extends Error {
+  statusCode: number;
+  errorType: string;
+
+  constructor(message: string) {
+    super(message);
+    this.errorType = "CONFLICT";
+    this.statusCode = HttpStatusCode.CONFLICT;
+    this.message = message;
+  }
+}
+
 export class AuthenticationError extends Error {
   statusCode: number;
   errorType: string;
@@ -35,7 +47,6 @@ export class AuthorizationError extends Error {
     this.message = message;
   }
 }
-
 export class ValidationError extends Error {
   statusCode: number;
   errorType: string;
