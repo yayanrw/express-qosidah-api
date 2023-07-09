@@ -1,6 +1,6 @@
 import { JWT_EXPIRATION, JWT_SECRET } from "../../core/config/jwt.config";
 import { AuthenticationError } from "../../core/utils/exceptions";
-import UserDto from "../dtos/user.dto";
+import { UserDto } from "../dtos/user.dto";
 import jwt from "jsonwebtoken";
 
 export default class JwtRepository {
