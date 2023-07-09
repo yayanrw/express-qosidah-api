@@ -1,12 +1,14 @@
 import { User } from "@prisma/client";
 import UserRepository from "../repositories/user.repository";
 import {
+  AuthorizationError,
   ConflictError,
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
 import {
   createUserSchema,
+  resetPasswordUserSchema,
   updatePasswordUserSchema,
   updateUserSchema,
 } from "../validations/user.validation";
@@ -70,14 +72,26 @@ export default class UserService {
     return user;
   };
 
-  updatePassword = async (
-    id: string,
-    passwordUpdate: PasswordUpdateDto
-  ): Promise<User | null> => {
+  updatePassword = async ({
+    id,
+    currentUserId,
+    passwordUpdate,
+  }: {
+    id: string;
+    currentUserId: string;
+    passwordUpdate: PasswordUpdateDto;
+  }): Promise<User | null> => {
     const { error, value } = updatePasswordUserSchema.validate(passwordUpdate);
 
     if (error) {
       throw new ValidationError(error.message);
+    }
+    console.log(currentUserId);
+
+    if (currentUserId !== id) {
+      throw new AuthorizationError(
+        "Unauthorized. You have no permission to update this"
+      );
     }
 
     if (passwordUpdate.currentPassword === passwordUpdate.newPassword) {
@@ -100,6 +114,26 @@ export default class UserService {
     }
 
     const hashedPassword = await bcrypt.hash(value.newPassword, 10);
+    const updatedUser = await userRepository.updatePassword(id, hashedPassword);
+    return updatedUser;
+  };
+
+  resetPassword = async (
+    id: string,
+    newPassword: string
+  ): Promise<User | null> => {
+    const { error, value } = resetPasswordUserSchema.validate(newPassword);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
+    const user = await userRepository.getById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    const hashedPassword = await bcrypt.hash(value, 10);
     const updatedUser = await userRepository.updatePassword(id, hashedPassword);
     return updatedUser;
   };

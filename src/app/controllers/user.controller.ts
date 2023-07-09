@@ -41,8 +41,20 @@ export default class UserController {
   updatePassword = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const passwordUpdate: PasswordUpdateDto = req.body;
-    
-    const user = await userService.updatePassword(id, passwordUpdate);
+
+    const user = await userService.updatePassword({
+      id: id,
+      currentUserId: req.user.id,
+      passwordUpdate: passwordUpdate,
+    });
+    wrapResponse({ res, data: user, message: "User password updated" });
+  });
+
+  resetPassword = wrapAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { newPassword } = req.body;
+
+    const user = await userService.resetPassword(id, newPassword);
     wrapResponse({ res, data: user, message: "User password updated" });
   });
 

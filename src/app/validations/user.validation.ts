@@ -18,4 +18,11 @@ const updatePasswordUserSchema = Joi.object({
   newPassword: Joi.string().min(8).required(),
 });
 
-export { createUserSchema, updateUserSchema, updatePasswordUserSchema };
+const resetPasswordUserSchema = Joi.string().min(8).required();
+
+export {
+  createUserSchema,
+  updateUserSchema,
+  updatePasswordUserSchema,
+  resetPasswordUserSchema,
+};
