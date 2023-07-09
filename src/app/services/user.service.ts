@@ -7,9 +7,11 @@ import {
 } from "../../core/utils/exceptions";
 import {
   createUserSchema,
+  updatePasswordUserSchema,
   updateUserSchema,
 } from "../validations/user.validation";
 import bcrypt from "bcrypt";
+import PasswordUpdateDto from "../dtos/password_update.dto";
 
 const userRepository = new UserRepository();
 
@@ -66,6 +68,40 @@ export default class UserService {
 
     const user = await userRepository.update(id, value);
     return user;
+  };
+
+  updatePassword = async (
+    id: string,
+    passwordUpdate: PasswordUpdateDto
+  ): Promise<User | null> => {
+    const { error, value } = updatePasswordUserSchema.validate(passwordUpdate);
+
+    if (error) {
+      throw new ValidationError(error.message);
+    }
+
+    if (passwordUpdate.currentPassword === passwordUpdate.newPassword) {
+      throw new ValidationError(
+        "The new password cannot be the same as the old password"
+      );
+    }
+
+    const user = await userRepository.getById(id);
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    const isCurrentPasswordValid = await bcrypt.compare(
+      passwordUpdate.currentPassword,
+      user.password
+    );
+    if (!isCurrentPasswordValid) {
+      throw new ValidationError("Current password is not valid");
+    }
+
+    const hashedPassword = await bcrypt.hash(value.newPassword, 10);
+    const updatedUser = await userRepository.updatePassword(id, hashedPassword);
+    return updatedUser;
   };
 
   delete = async (id: string): Promise<void> => {

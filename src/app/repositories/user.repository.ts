@@ -42,6 +42,21 @@ export default class UserRepository {
     return user;
   };
 
+  updatePassword = async (
+    id: string,
+    newPassword: string
+  ): Promise<User | null> => {
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        password: newPassword,
+      },
+    });
+    return user;
+  };
+
   delete = async (id: string): Promise<void> => {
     await prisma.user.delete({
       where: {
