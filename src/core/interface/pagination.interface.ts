@@ -6,4 +6,5 @@ export default interface Pagination {
   filter?: {
     [key: string]: string | number;
   };
+  offset?: number;
 }
