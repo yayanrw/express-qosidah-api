@@ -1,6 +1,6 @@
 import UserDto from "./user.dto";
 
-export default interface UserToken {
+export default interface UserTokenDto {
   user: UserDto;
   accessToken: string;
 }
