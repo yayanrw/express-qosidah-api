@@ -9,6 +9,11 @@ import QosidahRepository from "../repositories/qosidah.repository";
 import QosidahDto from "../dtos/qosidah.dto";
 import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
 import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
+import {
+  Pagination,
+  PaginationParams,
+  PaginationResult,
+} from "../../core/utils/pagination";
 
 const qosidahRepository = new QosidahRepository();
 const keywordQosidahRepository = new KeywordQosidahRepository();
@@ -17,6 +22,21 @@ const qosidahDetailRepository = new QosidahDetailRepository();
 export default class QosidahService {
   getAll = async (published?: string): Promise<Qosidah[]> => {
     return qosidahRepository.getAll(published === "true");
+  };
+
+  populate = async (
+    pgParams: PaginationParams
+  ): Promise<{ qosidahs: Qosidah[] | null; pagination: PaginationResult }> => {
+    const pg = new Pagination(pgParams);
+
+    const qosidahs = await qosidahRepository.populate(pg.getPaginationObject());
+    const totalData = await qosidahRepository.totalData(pg.filter);
+    const pgResult = pg.getPaginationResult(totalData);
+
+    return {
+      qosidahs,
+      pagination: pgResult,
+    };
   };
 
   getById = async (id: string): Promise<Qosidah | null> => {
