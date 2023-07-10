@@ -5,15 +5,15 @@ class Pagination {
   orderDirection?: "asc" | "desc" = "asc";
   filter: { [key: string]: string | number };
 
-  constructor(data: Pagination) {
+  constructor(data: PaginationParams) {
     this.page = data.page;
     this.pageSize = data.pageSize;
     this.orderBy = data.orderBy;
     this.orderDirection = data.orderDirection;
-    this.filter = data.filter;
+    this.filter = data.filter ?? {};
   }
 
-  getPaginationParams(): PaginationParams {
+  getPaginationObject(): PaginationObject {
     const { page, pageSize, orderBy, orderDirection, filter } = this;
 
     return {
@@ -43,6 +43,14 @@ class Pagination {
 }
 
 interface PaginationParams {
+  page?: string;
+  pageSize?: string;
+  orderBy?: string;
+  orderDirection?: "asc" | "desc";
+  filter?: { [key: string]: string | number };
+}
+
+interface PaginationObject {
   page?: number;
   pageSize?: number;
   orderBy?: string;
@@ -59,4 +67,4 @@ interface PaginationResult {
   nextPage: number | null;
 }
 
-export { Pagination, PaginationParams, PaginationResult };
+export { Pagination, PaginationParams, PaginationResult, PaginationObject };
