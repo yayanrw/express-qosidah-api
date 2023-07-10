@@ -4,6 +4,7 @@ import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahService from "../services/qosidah.service";
 import QosidahDto from "../dtos/qosidah.dto";
+import { PaginationParams } from "../../core/utils/pagination";
 
 const qosidahService = new QosidahService();
 
@@ -12,6 +13,13 @@ export default class QosidahController {
     const { published } = req.query;
 
     const qosidahs = await qosidahService.getAll(published?.toString());
+    wrapResponse({ res, data: qosidahs });
+  });
+
+  populate = wrapAsync(async (req: Request, res: Response) => {
+    const paginationParams: PaginationParams = req.query;
+
+    const qosidahs = await qosidahService.populate(paginationParams);
     wrapResponse({ res, data: qosidahs });
   });
 
