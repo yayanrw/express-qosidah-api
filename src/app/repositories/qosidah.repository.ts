@@ -1,5 +1,6 @@
 import { Qosidah, QosidahDetail } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
+import { PaginationObject } from "../../core/utils/pagination";
 
 export default class QosidahRepository {
   getAll = async (published?: boolean): Promise<Qosidah[]> => {
@@ -37,6 +38,43 @@ export default class QosidahRepository {
 
     const qosidahs = await prisma.qosidah.findMany(query);
     return qosidahs;
+  };
+
+  populate = async (pgObj: PaginationObject): Promise<Qosidah[] | null> => {
+    const where: { [key: string]: { contains: string } } = {};
+
+    if (pgObj.filter) {
+      Object.entries(pgObj.filter).forEach(([key, value]) => {
+        where[key] = { contains: String(value) };
+      });
+    }
+
+    const qosidahs = await prisma.qosidah.findMany({
+      skip: pgObj.offset,
+      take: pgObj.pageSize,
+      orderBy: {
+        [pgObj.orderBy ?? "id"]: pgObj.orderDirection ?? "asc",
+      },
+      where: where || {},
+    });
+
+    return qosidahs;
+  };
+
+  totalData = async (filter?: {
+    [key: string]: string | number;
+  }): Promise<number> => {
+    const where: { [key: string]: { contains: string } } = {};
+
+    if (filter) {
+      Object.entries(filter).forEach(([key, value]) => {
+        where[key] = { contains: String(value) };
+      });
+    }
+
+    const totalData = await prisma.qosidah.count({ where });
+
+    return totalData;
   };
 
   getById = async (id: string): Promise<Qosidah | null> => {
