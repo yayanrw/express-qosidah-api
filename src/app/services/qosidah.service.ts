@@ -1,5 +1,9 @@
 import { Qosidah } from "@prisma/client";
-import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
+import {
+  BadRequestError,
+  NotFoundError,
+  ValidationError,
+} from "../../core/utils/exceptions";
 import {
   createQosidahSchema,
   updatePublishedQosidahSchema,
@@ -14,6 +18,7 @@ import {
   PaginationParams,
   PaginationResult,
 } from "../../core/utils/pagination";
+import { paginationParamsSchema } from "../validations/pagination_params.validation";
 
 const qosidahRepository = new QosidahRepository();
 const keywordQosidahRepository = new KeywordQosidahRepository();
@@ -27,7 +32,13 @@ export default class QosidahService {
   populate = async (
     pgParams: PaginationParams
   ): Promise<{ qosidahs: Qosidah[] | null; pagination: PaginationResult }> => {
-    const pg = new Pagination(pgParams);
+    const { error, value } = paginationParamsSchema.validate(pgParams);
+
+    if (error) {
+      throw new BadRequestError(error.message);
+    }
+
+    const pg = new Pagination(value);
 
     const qosidahs = await qosidahRepository.populate(pg.getPaginationObject());
     const totalData = await qosidahRepository.totalData(pg.filter);
