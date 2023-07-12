@@ -5,7 +5,9 @@ import { UserTokenDto, userWithTokenToUserToken } from "../dtos/user_token.dto";
 import { logInValidation } from "../validations/auth.validation";
 import { userToUserDto } from "../dtos/user.dto";
 import { validate } from "../../core/utils/base.validation";
-import { jwtRepository, userRepository } from "../common/repositories";
+import { userRepository } from "../common/repositories";
+import { isStringsValid } from "../../core/utils/bcrypt.helper";
+import { createToken } from "../../core/utils/jwt.helper";
 
 export default class AuthService {
   logIn = async (logInDto: LogInDto): Promise<UserTokenDto> => {
@@ -16,15 +18,12 @@ export default class AuthService {
       throw new AuthenticationError("Email or Password incorrect");
     }
 
-    const isPasswordValid = userRepository.isPasswordValid(
-      logInDto.password,
-      user.password
-    );
+    const isPasswordValid = isStringsValid(logInDto.password, user.password);
     if (!isPasswordValid) {
       throw new AuthenticationError("Email or Password incorrect");
     }
 
-    const generatedToken = await jwtRepository.createToken(userToUserDto(user));
+    const generatedToken = await createToken(userToUserDto(user));
     const userToken = userWithTokenToUserToken(
       userToUserDto(user),
       generatedToken

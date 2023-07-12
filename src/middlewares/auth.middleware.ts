@@ -2,10 +2,8 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthenticationError } from "../core/utils/exceptions";
 import { handleError } from "../core/utils/handleError";
-import JwtRepository from "../app/repositories/jwt.repository";
 import { UserDto } from "../app/dtos/user.dto";
-
-const jwtRepository = new JwtRepository();
+import { verifyToken } from "../core/utils/jwt.helper";
 
 export const authMiddleware = async (
   req: Request,
@@ -16,7 +14,7 @@ export const authMiddleware = async (
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.split(" ")[1];
-      const decoded = await jwtRepository.verifyToken(token);
+      const decoded = await verifyToken(token);
       if (decoded) {
         req.user = decoded as UserDto;
         next();
