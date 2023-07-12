@@ -1,22 +1,22 @@
 import Joi from "joi";
 
-const createQosidahDetailSchema = Joi.object({
+const createQosidahDetailValidation = Joi.object({
   order: Joi.number().required(),
   lyrics: Joi.string().required(),
   lyricsLatin: Joi.string().allow(null).empty(""),
   lyricsTranslate: Joi.string().allow(null).empty(""),
 });
 
-const createQosidahSchema = Joi.object({
+const createQosidahValidation = Joi.object({
   title: Joi.string().required(),
   titleLatin: Joi.string().allow(null).optional(),
   titleTranslate: Joi.string().allow(null).optional(),
   keyword: Joi.array().items(Joi.string()).optional(),
   published: Joi.boolean().default(false).optional(),
-  qosidahDetail: Joi.array().items(createQosidahDetailSchema).required(),
+  qosidahDetail: Joi.array().items(createQosidahDetailValidation).required(),
 });
 
-const updateQosidahSchema = Joi.object({
+const updateQosidahValidation = Joi.object({
   title: Joi.string().required(),
   titleLatin: Joi.string().allow(null).optional(),
   titleTranslate: Joi.string().allow(null).optional(),
@@ -24,6 +24,10 @@ const updateQosidahSchema = Joi.object({
   keyword: Joi.array().items(Joi.string()).optional(),
 });
 
-const updatePublishedQosidahSchema = Joi.boolean().required();
+const updatePublishedQosidahValidation = Joi.boolean().required();
 
-export { createQosidahSchema, updateQosidahSchema, updatePublishedQosidahSchema };
+export {
+  createQosidahValidation,
+  updateQosidahValidation,
+  updatePublishedQosidahValidation,
+};
