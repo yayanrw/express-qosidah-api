@@ -1,6 +1,6 @@
 import { Qosidah, QosidahDetail } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
-import { PaginationObject } from "../../core/utils/pagination";
+import { PaginationObject } from "../../core/utils/pagination.helper";
 import { createWhereObject } from "../../core/utils/prisma.helper";
 
 export default class QosidahRepository {
@@ -41,7 +41,7 @@ export default class QosidahRepository {
     return qosidahs;
   };
 
-  populate = async (pgObj: PaginationObject): Promise<Qosidah[] | null> => {
+  populate = async (pgObj: PaginationObject): Promise<Qosidah[]> => {
     const where = createWhereObject(pgObj.filter);
 
     const qosidahs = await prisma.qosidah.findMany({

@@ -72,7 +72,7 @@ interface Paging<T> {
   paging: PaginationResult;
 }
 
-const pagingConverter = <T>(data: T, paging: PaginationResult): Paging<T> => {
+const toPaging = <T>(data: T, paging: PaginationResult): Paging<T> => {
   return {
     data: data,
     paging: paging,
@@ -85,5 +85,5 @@ export {
   PaginationResult,
   PaginationObject,
   Paging,
-  pagingConverter,
+  toPaging,
 };
