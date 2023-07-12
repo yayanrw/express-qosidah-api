@@ -67,4 +67,15 @@ interface PaginationResult {
   nextPage: number | null;
 }
 
-export { Pagination, PaginationParams, PaginationResult, PaginationObject };
+interface Paging<T> {
+  data: T;
+  paging: PaginationResult;
+}
+
+export {
+  Pagination,
+  PaginationParams,
+  PaginationResult,
+  PaginationObject,
+  Paging,
+};
