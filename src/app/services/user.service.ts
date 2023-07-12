@@ -1,5 +1,4 @@
 import { User } from "@prisma/client";
-import UserRepository from "../repositories/user.repository";
 import {
   AuthorizationError,
   ConflictError,
@@ -15,8 +14,9 @@ import {
 import bcrypt from "bcrypt";
 import PasswordUpdateDto from "../dtos/password_update.dto";
 import { UserDto, userToUserDto } from "../dtos/user.dto";
-
-const userRepository = new UserRepository();
+import { userRepository } from "../common/repositories";
+import { validate } from "../../core/utils/base.validation";
+import { encrypt } from "../../core/utils/bcrypt.helper";
 
 export default class UserService {
   getAll = async (): Promise<UserDto[]> => {
@@ -32,18 +32,14 @@ export default class UserService {
   };
 
   create = async (data: User): Promise<UserDto> => {
-    const { error, value } = createUserSchema.validate(data);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(createUserSchema, data);
 
     const isEmailExist = await userRepository.getByEmail(data.email);
 
     if (isEmailExist) {
       throw new ConflictError("Email already exists");
     }
-    value.password = await bcrypt.hash(data.password, 10);
+    value.password = await encrypt(data.password);
 
     const user = await userRepository.create(value);
     return userToUserDto(user);
