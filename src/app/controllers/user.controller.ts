@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { User } from "@prisma/client";
-import UserService from "../services/user.service";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import PasswordUpdateDto from "../dtos/password_update.dto";
-
-const userService = new UserService();
+import { userService } from "../common/services";
 
 export default class UserController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
