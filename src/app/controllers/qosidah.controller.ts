@@ -4,7 +4,7 @@ import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahService from "../services/qosidah.service";
 import QosidahDto from "../dtos/qosidah.dto";
-import { PaginationParams } from "../../core/utils/pagination";
+import { PaginationParams } from "../../core/utils/pagination.helper";
 
 const qosidahService = new QosidahService();
 
