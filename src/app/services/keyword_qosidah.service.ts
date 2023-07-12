@@ -1,9 +1,5 @@
 import { KeywordQosidah } from "@prisma/client";
-import {
-  ConflictError,
-  NotFoundError,
-  ValidationError,
-} from "../../core/utils/exceptions";
+import { ConflictError, NotFoundError } from "../../core/utils/exceptions";
 import { keywordQosidahValidation } from "../validations/keyword_qosidah.validation";
 import { keywordQosidahRepository } from "../common/repositories";
 import { validate } from "../../core/utils/base.validation";
