@@ -5,18 +5,17 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
-import {
-  createUserSchema,
-  resetPasswordUserSchema,
-  updatePasswordUserSchema,
-  updateUserSchema,
-} from "../validations/user.validation";
-import bcrypt from "bcrypt";
 import PasswordUpdateDto from "../dtos/password_update.dto";
 import { UserDto, userToUserDto } from "../dtos/user.dto";
 import { userRepository } from "../common/repositories";
 import { validate } from "../../core/utils/base.validation";
-import { encrypt } from "../../core/utils/bcrypt.helper";
+import { encrypt, isStringsValid } from "../../core/utils/bcrypt.helper";
+import {
+  createUserValidation,
+  resetPasswordUserValidation,
+  updatePasswordUserValidation,
+  updateUserValidation,
+} from "../validations/user.validation";
 
 export default class UserService {
   getAll = async (): Promise<UserDto[]> => {
@@ -32,7 +31,7 @@ export default class UserService {
   };
 
   create = async (data: User): Promise<UserDto> => {
-    const value = validate(createUserSchema, data);
+    const value = validate(createUserValidation, data);
 
     const isEmailExist = await userRepository.getByEmail(data.email);
 
@@ -46,11 +45,7 @@ export default class UserService {
   };
 
   update = async (id: string, updateData: User): Promise<UserDto | null> => {
-    const { error, value } = updateUserSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(updateUserValidation, updateData);
 
     const isExist = await userRepository.getById(id);
     if (!isExist) {
@@ -78,11 +73,7 @@ export default class UserService {
     currentUserId: string;
     passwordUpdate: PasswordUpdateDto;
   }): Promise<UserDto | null> => {
-    const { error, value } = updatePasswordUserSchema.validate(passwordUpdate);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(updatePasswordUserValidation, passwordUpdate);
 
     if (currentUserId !== id) {
       throw new AuthorizationError(
@@ -101,7 +92,7 @@ export default class UserService {
       throw new NotFoundError("User not found");
     }
 
-    const isCurrentPasswordValid = await bcrypt.compare(
+    const isCurrentPasswordValid = await isStringsValid(
       passwordUpdate.currentPassword,
       user.password
     );
@@ -109,7 +100,7 @@ export default class UserService {
       throw new ValidationError("Current password is not valid");
     }
 
-    const hashedPassword = await bcrypt.hash(value.newPassword, 10);
+    const hashedPassword = await encrypt(value.newPassword);
     const updatedUser = await userRepository.updatePassword(id, hashedPassword);
     return updatedUser;
   };
@@ -118,18 +109,14 @@ export default class UserService {
     id: string,
     newPassword: string
   ): Promise<UserDto | null> => {
-    const { error, value } = resetPasswordUserSchema.validate(newPassword);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(resetPasswordUserValidation, newPassword);
 
     const user = await userRepository.getById(id);
     if (!user) {
       throw new NotFoundError("User not found");
     }
 
-    const hashedPassword = await bcrypt.hash(value, 10);
+    const hashedPassword = await encrypt(value);
     const updatedUser = await userRepository.updatePassword(id, hashedPassword);
     return updatedUser;
   };
