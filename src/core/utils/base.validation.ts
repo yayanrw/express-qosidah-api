@@ -14,3 +14,5 @@ const validate = (schema: Schema, req: Request) => {
     return result.value;
   }
 };
+
+export { validate };
