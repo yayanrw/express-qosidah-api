@@ -9,7 +9,7 @@ import {
   Pagination,
   PaginationParams,
   Paging,
-  pagingConverter,
+  toPaging,
 } from "../../core/utils/pagination.helper";
 import { paginationParamsValidation } from "../validations/pagination_params.validation";
 import {
@@ -34,7 +34,7 @@ export default class QosidahService {
     const totalData = await qosidahRepository.totalData(pg.filter);
     const pgResult = pg.getPaginationResult(totalData);
 
-    return pagingConverter(qosidahs, pgResult);
+    return toPaging(qosidahs, pgResult);
   };
 
   getById = async (id: string): Promise<Qosidah | null> => {
