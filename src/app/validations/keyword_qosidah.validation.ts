@@ -1,7 +1,7 @@
 import Joi from "joi";
 
-const keywordQosidahSchema = Joi.object({
+const keywordQosidahValidation = Joi.object({
   keyword: Joi.string().required(),
 });
 
-export { keywordQosidahSchema };
+export { keywordQosidahValidation };
