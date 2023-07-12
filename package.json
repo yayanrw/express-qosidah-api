@@ -16,7 +16,8 @@
     "pg": "^8.11.1",
     "prisma": "^4.16.2",
     "tsc-watch": "^6.0.4",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
