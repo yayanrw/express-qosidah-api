@@ -6,7 +6,7 @@ import {
 import LogInDto from "../dtos/login.dto";
 import { UserTokenDto, userWithTokenToUserToken } from "../dtos/user_token.dto";
 import UserRepository from "../repositories/user.repository";
-import { logInSchema } from "../validations/auth.validation";
+import { logInValidation } from "../validations/auth.validation";
 import bcrypt from "bcrypt";
 import JwtRepository from "../repositories/jwt.repository";
 import { userToUserDto } from "../dtos/user.dto";
@@ -16,7 +16,7 @@ const jwtRepository = new JwtRepository();
 
 export default class AuthService {
   logIn = async (logInDto: LogInDto): Promise<UserTokenDto> => {
-    const { error } = logInSchema.validate(logInDto);
+    const { error } = logInValidation.validate(logInDto);
 
     if (error) {
       throw new ValidationError(error.message);
