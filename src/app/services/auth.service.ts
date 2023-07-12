@@ -1,38 +1,27 @@
 import { User } from "@prisma/client";
-import {
-  AuthenticationError,
-  ValidationError,
-} from "../../core/utils/exceptions";
+import { AuthenticationError } from "../../core/utils/exceptions";
 import LogInDto from "../dtos/login.dto";
 import { UserTokenDto, userWithTokenToUserToken } from "../dtos/user_token.dto";
-import UserRepository from "../repositories/user.repository";
 import { logInValidation } from "../validations/auth.validation";
-import bcrypt from "bcrypt";
-import JwtRepository from "../repositories/jwt.repository";
 import { userToUserDto } from "../dtos/user.dto";
-
-const userRepository = new UserRepository();
-const jwtRepository = new JwtRepository();
+import { validate } from "../../core/utils/base.validation";
+import { jwtRepository, userRepository } from "../common/repositories";
 
 export default class AuthService {
   logIn = async (logInDto: LogInDto): Promise<UserTokenDto> => {
-    const { error } = logInValidation.validate(logInDto);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    validate(logInValidation, logInDto);
 
     const user: User | null = await userRepository.getByEmail(logInDto.email);
     if (!user) {
-      throw new AuthenticationError("Email is not registered");
+      throw new AuthenticationError("Email or Password incorrect");
     }
 
-    const isPasswordValid = await bcrypt.compare(
+    const isPasswordValid = userRepository.isPasswordValid(
       logInDto.password,
       user.password
     );
     if (!isPasswordValid) {
-      throw new AuthenticationError("Password is invalid");
+      throw new AuthenticationError("Email or Password incorrect");
     }
 
     const generatedToken = await jwtRepository.createToken(userToUserDto(user));
