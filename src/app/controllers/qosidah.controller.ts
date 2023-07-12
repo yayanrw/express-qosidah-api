@@ -2,11 +2,9 @@ import { Request, Response } from "express";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
-import QosidahService from "../services/qosidah.service";
 import QosidahDto from "../dtos/qosidah.dto";
 import { PaginationParams } from "../../core/utils/pagination.helper";
-
-const qosidahService = new QosidahService();
+import { qosidahService } from "../common/services";
 
 export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
