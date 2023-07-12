@@ -10,6 +10,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "./exceptions";
+import logger from "../config/logger.config";
 
 const errorMappings: { [key: string]: any } = {
   NotFoundError: NotFoundError,
@@ -31,6 +32,8 @@ export function handleError(res: Response, error: any) {
       break;
     }
   }
+
+  logger.error(`${errorType} | ${statusCode} => ${error.message}`);
 
   return wrapResponse<null>({
     res,
