@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const qosidahDetailSchema = Joi.object({
+const qosidahDetailValidation = Joi.object({
   order: Joi.number().required(),
   lyrics: Joi.string().required(),
   lyricsLatin: Joi.string().allow(null).empty(""),
@@ -8,4 +8,4 @@ const qosidahDetailSchema = Joi.object({
   qosidahId: Joi.string().required(),
 });
 
-export { qosidahDetailSchema };
+export { qosidahDetailValidation };
