@@ -4,10 +4,9 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../core/utils/exceptions";
-import { keywordQosidahSchema } from "../validations/keyword_qosidah.validation";
-import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
-
-const keywordQosidahRepository = new KeywordQosidahRepository();
+import { keywordQosidahValidation } from "../validations/keyword_qosidah.validation";
+import { keywordQosidahRepository } from "../common/repositories";
+import { validate } from "../../core/utils/base.validation";
 
 export default class KeywordQosidahService {
   getAll = async (): Promise<KeywordQosidah[]> => {
@@ -23,11 +22,7 @@ export default class KeywordQosidahService {
   };
 
   create = async (data: KeywordQosidah): Promise<KeywordQosidah> => {
-    const { error, value } = keywordQosidahSchema.validate(data);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(keywordQosidahValidation, data);
 
     const isExist = await keywordQosidahRepository.getByKeyword(data.keyword);
 
@@ -43,11 +38,7 @@ export default class KeywordQosidahService {
     id: string,
     updateData: KeywordQosidah
   ): Promise<KeywordQosidah | null> => {
-    const { error, value } = keywordQosidahSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(keywordQosidahValidation, updateData);
 
     const isExist = await keywordQosidahRepository.getById(id);
     if (!isExist) {
