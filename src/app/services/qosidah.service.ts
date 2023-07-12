@@ -1,42 +1,32 @@
 import { Qosidah } from "@prisma/client";
+import { NotFoundError, ValidationError } from "../../core/utils/exceptions";
 import {
-  BadRequestError,
-  NotFoundError,
-  ValidationError,
-} from "../../core/utils/exceptions";
-import {
-  createQosidahSchema,
-  updatePublishedQosidahSchema,
-  updateQosidahSchema,
+  createQosidahValidation,
+  updatePublishedQosidahValidation,
+  updateQosidahValidation,
 } from "../validations/qosidah.validation";
-import QosidahRepository from "../repositories/qosidah.repository";
-import QosidahDto from "../dtos/qosidah.dto";
-import KeywordQosidahRepository from "../repositories/keyword_qosidah.repository";
-import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
 import {
   Pagination,
   PaginationParams,
-  PaginationResult,
-} from "../../core/utils/pagination";
-import { paginationParamsSchema } from "../validations/pagination_params.validation";
-
-const qosidahRepository = new QosidahRepository();
-const keywordQosidahRepository = new KeywordQosidahRepository();
-const qosidahDetailRepository = new QosidahDetailRepository();
+  Paging,
+  pagingConverter,
+} from "../../core/utils/pagination.helper";
+import { paginationParamsValidation } from "../validations/pagination_params.validation";
+import {
+  keywordQosidahRepository,
+  qosidahDetailRepository,
+  qosidahRepository,
+} from "../common/repositories";
+import QosidahDto from "../dtos/qosidah.dto";
+import { validate } from "../../core/utils/base.validation";
 
 export default class QosidahService {
   getAll = async (published?: string): Promise<Qosidah[]> => {
     return qosidahRepository.getAll(published === "true");
   };
 
-  populate = async (
-    pgParams: PaginationParams
-  ): Promise<{ qosidahs: Qosidah[] | null; pagination: PaginationResult }> => {
-    const { error, value } = paginationParamsSchema.validate(pgParams);
-
-    if (error) {
-      throw new BadRequestError(error.message);
-    }
+  populate = async (pgParams: PaginationParams): Promise<Paging<Qosidah[]>> => {
+    const value = validate(paginationParamsValidation, pgParams);
 
     const pg = new Pagination(value);
 
@@ -44,10 +34,7 @@ export default class QosidahService {
     const totalData = await qosidahRepository.totalData(pg.filter);
     const pgResult = pg.getPaginationResult(totalData);
 
-    return {
-      qosidahs,
-      pagination: pgResult,
-    };
+    return pagingConverter(qosidahs, pgResult);
   };
 
   getById = async (id: string): Promise<Qosidah | null> => {
@@ -59,11 +46,7 @@ export default class QosidahService {
   };
 
   create = async (authorId: string, data: QosidahDto): Promise<Qosidah> => {
-    const { error, value } = createQosidahSchema.validate(data);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(createQosidahValidation, data);
 
     if (data.keyword) {
       await Promise.all(
@@ -90,11 +73,7 @@ export default class QosidahService {
     id: string,
     updateData: QosidahDto
   ): Promise<Qosidah | null> => {
-    const { error, value } = updateQosidahSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(updateQosidahValidation, updateData);
 
     if (updateData.keyword) {
       await Promise.all(
@@ -120,11 +99,7 @@ export default class QosidahService {
     id: string,
     published: boolean
   ): Promise<Qosidah | null> => {
-    const { error, value } = updatePublishedQosidahSchema.validate(published);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(updatePublishedQosidahValidation, published);
 
     const qosidah = await qosidahRepository.updatePublished(id, value);
 
