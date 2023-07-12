@@ -1,11 +1,15 @@
 import { QosidahDetail } from "@prisma/client";
-import { ConflictError, NotFoundError, ValidationError } from "../../core/utils/exceptions";
-import { qosidahDetailSchema } from "../validations/qosidah_detail.validation";
-import QosidahDetailRepository from "../repositories/qosidah_detail.repository";
-import QosidahRepository from "../repositories/qosidah.repository";
-
-const qosidahDetailRepository = new QosidahDetailRepository();
-const qosidahRepository = new QosidahRepository();
+import {
+  ConflictError,
+  NotFoundError,
+  ValidationError,
+} from "../../core/utils/exceptions";
+import { qosidahDetailValidation } from "../validations/qosidah_detail.validation";
+import {
+  qosidahDetailRepository,
+  qosidahRepository,
+} from "../common/repositories";
+import { validate } from "../../core/utils/base.validation";
 
 export default class QosidahDetailService {
   getAll = async (): Promise<QosidahDetail[]> => {
@@ -33,11 +37,7 @@ export default class QosidahDetailService {
   };
 
   create = async (data: QosidahDetail): Promise<QosidahDetail> => {
-    const { error, value } = qosidahDetailSchema.validate(data);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(qosidahDetailValidation, data);
 
     const isQosidahExist = await qosidahRepository.getById(data.qosidahId);
 
@@ -63,11 +63,7 @@ export default class QosidahDetailService {
     id: string,
     updateData: QosidahDetail
   ): Promise<QosidahDetail | null> => {
-    const { error, value } = qosidahDetailSchema.validate(updateData);
-
-    if (error) {
-      throw new ValidationError(error.message);
-    }
+    const value = validate(qosidahDetailValidation, updateData);
 
     const isExist = await qosidahDetailRepository.getById(id);
     if (!isExist) {
