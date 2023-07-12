@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import prisma from "../../core/config/prisma.config";
 import { UserDto } from "../dtos/user.dto";
+import bcrypt from "bcrypt";
 
 export default class UserRepository {
   getAll = async (): Promise<UserDto[]> => {
@@ -32,6 +33,13 @@ export default class UserRepository {
       },
     });
     return user;
+  };
+
+  isPasswordValid = async (
+    inputPassword: string,
+    userPassword: string
+  ): Promise<boolean> => {
+    return await bcrypt.compare(inputPassword, userPassword);
   };
 
   create = async (data: User): Promise<User> => {
