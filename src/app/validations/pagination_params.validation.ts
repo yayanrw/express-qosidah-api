@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const paginationParamsSchema = Joi.object({
+const paginationParamsValidation = Joi.object({
   page: Joi.string().required(),
   pageSize: Joi.string().required(),
   orderBy: Joi.string().default("id"),
@@ -8,4 +8,4 @@ const paginationParamsSchema = Joi.object({
   filter: Joi.object().optional(),
 });
 
-export { paginationParamsSchema };
+export { paginationParamsValidation };
