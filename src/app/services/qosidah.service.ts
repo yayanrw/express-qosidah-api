@@ -16,7 +16,7 @@ import {
   keywordQosidahRepository,
   qosidahDetailRepository,
   qosidahRepository,
-} from "../common/repositories";
+} from "../instance/repositories";
 import QosidahDto from "../dtos/qosidah.dto";
 import { validate } from "../../core/utils/base.validation";
 

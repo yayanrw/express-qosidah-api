@@ -4,7 +4,7 @@ import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import PasswordUpdateDto from "../dtos/password_update.dto";
-import { userService } from "../common/services";
+import { userService } from "../instance/services";
 
 export default class UserController {
   getAll = wrapAsync(async (req: Request, res: Response) => {

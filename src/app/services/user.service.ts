@@ -7,7 +7,7 @@ import {
 } from "../../core/utils/exceptions";
 import PasswordUpdateDto from "../dtos/password_update.dto";
 import { UserDto, userToUserDto } from "../dtos/user.dto";
-import { userRepository } from "../common/repositories";
+import { userRepository } from "../instance/repositories";
 import { validate } from "../../core/utils/base.validation";
 import { encrypt, isStringsValid } from "../../core/utils/bcrypt.helper";
 import {

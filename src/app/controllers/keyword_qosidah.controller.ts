@@ -3,7 +3,7 @@ import { KeywordQosidah } from "@prisma/client";
 import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
-import { keywordQosidahService } from "../common/services";
+import { keywordQosidahService } from "../instance/services";
 export default class KeywordQosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
     const keywordQosidahs = await keywordQosidahService.getAll();

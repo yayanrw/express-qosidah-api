@@ -4,7 +4,7 @@ import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahDto from "../dtos/qosidah.dto";
 import { PaginationParams } from "../../core/utils/pagination.helper";
-import { qosidahService } from "../common/services";
+import { qosidahService } from "../instance/services";
 
 export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {

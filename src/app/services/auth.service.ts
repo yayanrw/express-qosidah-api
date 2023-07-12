@@ -5,7 +5,7 @@ import { UserTokenDto, userWithTokenToUserToken } from "../dtos/user_token.dto";
 import { logInValidation } from "../validations/auth.validation";
 import { userToUserDto } from "../dtos/user.dto";
 import { validate } from "../../core/utils/base.validation";
-import { userRepository } from "../common/repositories";
+import { userRepository } from "../instance/repositories";
 import { isStringsValid } from "../../core/utils/bcrypt.helper";
 import { createToken } from "../../core/utils/jwt.helper";
 

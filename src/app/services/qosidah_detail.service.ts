@@ -8,7 +8,7 @@ import { qosidahDetailValidation } from "../validations/qosidah_detail.validatio
 import {
   qosidahDetailRepository,
   qosidahRepository,
-} from "../common/repositories";
+} from "../instance/repositories";
 import { validate } from "../../core/utils/base.validation";
 
 export default class QosidahDetailService {
