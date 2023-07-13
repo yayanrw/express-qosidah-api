@@ -8,7 +8,8 @@ const router = Router();
 const qosidahController = new QosidahController();
 
 router.post("/", [authMiddleware, adminMiddleware], qosidahController.create);
-router.get("/", [authMiddleware], qosidahController.populate);
+router.get("/", [authMiddleware], qosidahController.getAll);
+router.get("/populate", [authMiddleware], qosidahController.populate);
 router.get(
   "/:id",
   [authMiddleware, cacheMiddleware],
