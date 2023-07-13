@@ -4,9 +4,12 @@ import { wrapResponse } from "../../core/utils/wrapResponse";
 import HttpStatusCode from "../../core/enum/http-status-code";
 import { wrapAsync } from "../../core/utils/wrapAsync";
 import { keywordQosidahService } from "../instance/services";
+import { storeCache } from "../../core/utils/redis.helper";
+
 export default class KeywordQosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
     const keywordQosidahs = await keywordQosidahService.getAll();
+    await storeCache(req.originalUrl, keywordQosidahs);
     wrapResponse({ res, data: keywordQosidahs });
   });
 
