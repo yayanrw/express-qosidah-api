@@ -11,9 +11,7 @@ export const cacheMiddleware = async (
   const { id } = req.params;
 
   try {
-    await redisClient.connect();
     const cachedData = await redisClient.get(id);
-    await redisClient.disconnect();
 
     if (cachedData !== null) {
       wrapResponse({
