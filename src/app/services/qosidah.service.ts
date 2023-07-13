@@ -19,7 +19,6 @@ import {
 } from "../instance/repositories";
 import QosidahDto from "../dtos/qosidah.dto";
 import { validate } from "../../core/utils/base.validation";
-import { storeCache } from "../../core/utils/redis.helper";
 
 export default class QosidahService {
   getAll = async (published?: string): Promise<Qosidah[]> => {
@@ -44,8 +43,6 @@ export default class QosidahService {
     if (!qosidah) {
       throw new NotFoundError("Qosidah not found");
     }
-
-    await storeCache(qosidah.id, qosidah);
     return qosidah;
   };
 
