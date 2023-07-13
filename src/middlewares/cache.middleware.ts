@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { redisClient } from "../core/config/redis.config";
 import { wrapResponse } from "../core/utils/wrapResponse";
 import { handleError } from "../core/utils/handleError";
 import { getCache } from "../core/utils/redis.helper";
