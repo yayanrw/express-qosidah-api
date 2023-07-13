@@ -12,6 +12,7 @@ export default class QosidahController {
     const { published } = req.query;
 
     const qosidahs = await qosidahService.getAll(published?.toString());
+    await storeCache(req.originalUrl, qosidahs);
     wrapResponse({ res, data: qosidahs });
   });
 
