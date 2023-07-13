@@ -8,10 +8,8 @@ export const cacheMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { id } = req.params;
-
   try {
-    const cachedData = await getCache(id);
+    const cachedData = await getCache(req.originalUrl);
 
     if (cachedData !== null) {
       wrapResponse({
