@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { redisClient } from "../core/config/redis.config";
 import { wrapResponse } from "../core/utils/wrapResponse";
 import { handleError } from "../core/utils/handleError";
+import { getCache } from "../core/utils/redis.helper";
 
 export const cacheMiddleware = async (
   req: Request,
@@ -11,12 +12,12 @@ export const cacheMiddleware = async (
   const { id } = req.params;
 
   try {
-    const cachedData = await redisClient.get(id);
+    const cachedData = await getCache(id);
 
     if (cachedData !== null) {
       wrapResponse({
         res,
-        data: JSON.parse(cachedData),
+        data: cachedData,
       });
       return;
     }
