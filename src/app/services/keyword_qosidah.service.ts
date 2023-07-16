@@ -8,7 +8,7 @@ import { storeCache } from "../../core/utils/redis.helper";
 
 export default class KeywordQosidahService {
   getAll = async (req: Request): Promise<KeywordQosidah[]> => {
-    const keywordQosidahs = keywordQosidahRepository.getAll();
+    const keywordQosidahs = await keywordQosidahRepository.getAll();
     await storeCache(req.originalUrl, keywordQosidahs);
     return keywordQosidahs;
   };
