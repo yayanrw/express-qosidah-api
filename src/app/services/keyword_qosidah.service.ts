@@ -3,10 +3,14 @@ import { ConflictError, NotFoundError } from "../../core/utils/exceptions";
 import { keywordQosidahValidation } from "../validations/keyword_qosidah.validation";
 import { keywordQosidahRepository } from "../instance/repositories";
 import { validate } from "../../core/utils/base.validation";
+import { Request } from "express";
+import { storeCache } from "../../core/utils/redis.helper";
 
 export default class KeywordQosidahService {
-  getAll = async (): Promise<KeywordQosidah[]> => {
-    return keywordQosidahRepository.getAll();
+  getAll = async (req: Request): Promise<KeywordQosidah[]> => {
+    const keywordQosidahs = keywordQosidahRepository.getAll();
+    await storeCache(req.originalUrl, keywordQosidahs);
+    return keywordQosidahs;
   };
 
   getById = async (id: string): Promise<KeywordQosidah | null> => {
