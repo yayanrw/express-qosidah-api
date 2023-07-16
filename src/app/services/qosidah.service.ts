@@ -24,7 +24,7 @@ import { storeCache } from "../../core/utils/redis.helper";
 
 export default class QosidahService {
   getAll = async (req: Request, published?: string): Promise<Qosidah[]> => {
-    const qosidahs = qosidahRepository.getAll(published === "true");
+    const qosidahs = await qosidahRepository.getAll(published === "true");
     await storeCache(req.originalUrl, qosidahs);
     return qosidahs;
   };
