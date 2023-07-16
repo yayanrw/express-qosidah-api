@@ -5,14 +5,12 @@ import { wrapAsync } from "../../core/utils/wrapAsync";
 import QosidahDto from "../dtos/qosidah.dto";
 import { PaginationParams } from "../../core/utils/pagination.helper";
 import { qosidahService } from "../instance/services";
-import { storeCache } from "../../core/utils/redis.helper";
 
 export default class QosidahController {
   getAll = wrapAsync(async (req: Request, res: Response) => {
     const { published } = req.query;
 
-    const qosidahs = await qosidahService.getAll(published?.toString());
-    await storeCache(req.originalUrl, qosidahs);
+    const qosidahs = await qosidahService.getAll(req, published?.toString());
     wrapResponse({ res, data: qosidahs });
   });
 
@@ -26,8 +24,7 @@ export default class QosidahController {
 
   getById = wrapAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const qosidah = await qosidahService.getById(id);
-    await storeCache(req.originalUrl, qosidah);
+    const qosidah = await qosidahService.getById(req, id);
     wrapResponse({ res, data: qosidah });
   });
 

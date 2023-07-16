@@ -19,10 +19,14 @@ import {
 } from "../instance/repositories";
 import QosidahDto from "../dtos/qosidah.dto";
 import { validate } from "../../core/utils/base.validation";
+import { Request } from "express";
+import { storeCache } from "../../core/utils/redis.helper";
 
 export default class QosidahService {
-  getAll = async (published?: string): Promise<Qosidah[]> => {
-    return qosidahRepository.getAll(published === "true");
+  getAll = async (req: Request, published?: string): Promise<Qosidah[]> => {
+    const qosidahs = qosidahRepository.getAll(published === "true");
+    await storeCache(req.originalUrl, qosidahs);
+    return qosidahs;
   };
 
   populate = async (pgParams: PaginationParams): Promise<Paging<Qosidah[]>> => {
@@ -37,12 +41,13 @@ export default class QosidahService {
     return toPaging(qosidahs, pgResult);
   };
 
-  getById = async (id: string): Promise<Qosidah | null> => {
+  getById = async (req: Request, id: string): Promise<Qosidah | null> => {
     const qosidah = await qosidahRepository.getById(id);
 
     if (!qosidah) {
       throw new NotFoundError("Qosidah not found");
     }
+    await storeCache(req.originalUrl, qosidah);
     return qosidah;
   };
 
