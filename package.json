@@ -4,7 +4,7 @@
   "description": "Qosidah App Back-End with Express, Prisma",
   "main": "index.js",
   "dependencies": {
-    "@prisma/client": "^4.16.2",
+    "@prisma/client": "^5.4.2",
     "@types/validator": "^13.7.17",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
@@ -39,7 +39,7 @@
     "dev": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/src/index.js",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "ts-node prisma/seeders/index.ts",
     "build": "tsc-build",
     "lint": "eslint ."
   },
