@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -16,45 +16,45 @@ enum Role {
 }
 
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  name String?
-  role Role
-  password String
-  createdAt DateTime @default(now())
-  qosidahs Qosidah []
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String?
+  role      Role
+  password  String
+  createdAt DateTime  @default(now())
+  qosidahs  Qosidah[]
 }
 
 model KeywordQosidah {
-  id String @id @default(uuid())
-  keyword String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  qosidahs Qosidah[]
+  id        String    @id @default(uuid())
+  keyword   String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  qosidahs  Qosidah[]
 }
 
 model Qosidah {
-  id String @id @default(uuid())
-  title String
-  titleLatin String?
+  id             String           @id @default(uuid())
+  title          String
+  titleLatin     String?
   titleTranslate String?
-  published Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  authorId String?
-  author User? @relation(fields: [authorId], references: [id])
-  keyword KeywordQosidah[]
-  qosidahDetail QosidahDetail[]
+  published      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  authorId       String?
+  author         User?            @relation(fields: [authorId], references: [id])
+  keyword        KeywordQosidah[]
+  qosidahDetail  QosidahDetail[]
 }
 
 model QosidahDetail {
-  id String @id @default(uuid())
-  order Int
-  lyrics String
-  lyricsLatin String?
+  id              String   @id @default(uuid())
+  order           Int
+  lyrics          String
+  lyricsLatin     String?
   lyricsTranslate String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  qosidahId String
-  qosidah Qosidah @relation(fields: [qosidahId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  qosidahId       String
+  qosidah         Qosidah  @relation(fields: [qosidahId], references: [id])
 }
